@@ -1,0 +1,18 @@
+ips: 123
+# ssh 端口，不可为空
+ssh_port: 22
+# 执行检测的用户的 ssh 密码，若所有节点密码相同，则只需填写一个字符串，如 Password；若节点之间密码不同，则以列表形式填写，如 ['Passwd1', 'Passwd2', 'Passwd3']
+password: 456
+# 若执行 sudo 需要输入密码，则更改为 True
+sudo_need_password: False
+
+mode1:
+  'a': 'low'
+  'b': 'fast'
+
+
+mode:
+  - 1
+  - 2
+
+
