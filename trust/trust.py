@@ -94,6 +94,7 @@ class Trust(object):
         return conf
 
     def login_cmd(self,password,cmd):
+        pass
 
 
     #检查提供的 ip 和密码是否能登录上
