@@ -93,9 +93,14 @@ class Trust(object):
 
         return conf
 
+    def login_cmd(self,password,cmd):
+
+
     #检查提供的 ip 和密码是否能登录上
     def check_login(self):
-        for ip in self.
+        for ip in self.conf['ips']:
+            password = self.conf['ssh_params'][ip]['password']
+
 
 
 
@@ -113,6 +118,7 @@ if __name__ == '__main__':
     print(args.conf_file)
     main = Trust(args.conf_file)
     print(main.conf)
+    main.check_login()
 
 
 
