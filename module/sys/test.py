@@ -14,3 +14,12 @@ except SystemExit:
     print('error occur')
 finally:
     print('over')
+
+
+
+print(sys.path) #path路径
+
+print(sys.platform)  #平台
+
+
+print(sys.version)
