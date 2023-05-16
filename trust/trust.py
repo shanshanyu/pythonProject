@@ -19,8 +19,19 @@ print(WORK_DIR)
 
 class Trust(object):
     def __init__(self,conf_file):
+        #用来保存conf的结果，方便后续问题排查
         self.conf_json = os.path.join(WORK_DIR,'trust.json')
+        #conf
         self.conf = self.parse_conf(conf_file)
+
+        #将conf字典中的字段提取出来，方便后续直接调用
+        self.ips = self.conf['ips']
+        self.ssh_port = self.conf['ssh_port']
+        self.password = self.conf['password']
+        #user 必须是 root，并且提供密码
+        self.user = self.conf['user']
+        self.trust_user = self.conf['trust_user']
+        self.ssh_params = self.conf['ssh_params']
 
     def parse_conf(self,conf_file):
         #判断文件是否存在
@@ -67,7 +78,7 @@ class Trust(object):
         if conf['user'] != 'root':
             raise Exception('user must be root,current is {}'.format(conf['user']))
 
-        #检查需要做免密的用户
+        #检查需要做免密的用户，如果没指定，使用当前用户
         conf['trust_user']  = conf['trust_user'] if 'trust_user' in conf else os.environ.get('USER')
         print(conf['trust_user'])
 
@@ -93,17 +104,13 @@ class Trust(object):
 
         return conf
 
-    def login_cmd(self,password,cmd):
+
 
 
     #检查提供的 ip 和密码是否能登录上
     def check_login(self):
         for ip in self.conf['ips']:
             password = self.conf['ssh_params'][ip]['password']
-
-
-
-
 
 
 
