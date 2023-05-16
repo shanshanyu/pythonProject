@@ -4,3 +4,13 @@ author: yss
 version: 1.0
 '''
 
+import sys
+print(sys.argv)  #列表
+
+try:
+    sys.exit("abnormal")  #sys.exit 是产生一个 SystemExit 异常，为什么没有被Exception捕获到
+    #systemexit不是exception的子类
+except SystemExit:
+    print('error occur')
+finally:
+    print('over')

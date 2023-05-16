@@ -13,4 +13,6 @@ with open('test.txt','a') as f:
 
 #print(json.dump(d))
 
-print(json.dumps())
+print(json.dumps(d))  #把python对象转换成 json 字符串
+print(type(json.dumps(d)))
+
