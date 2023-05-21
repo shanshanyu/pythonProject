@@ -5,3 +5,13 @@ version: 1.0
 '''
 a = "1234"
 print(a[-1:])
+
+
+a = 1234
+print(str(a))
+print(type(str(a)))
+
+b = str(a)
+print(b)
+print(type(b))
+print(b[-1:])
