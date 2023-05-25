@@ -41,7 +41,7 @@ def float_to_rmb():
         print(integer)
         #小数部分
         #fraction = int((num - integer)*100)
-        fraction = int(round(num-integer,2)*100)
+        fraction = round((num-integer)*100)
         print(fraction)
         integer_len = len(str(integer))
         if integer_len <= 4 :
