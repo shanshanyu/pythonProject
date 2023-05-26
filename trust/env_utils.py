@@ -21,22 +21,22 @@ def check_ip(ip):
 
 
 class SSHClient(object):
-    def __init__(self,host,port=22,user='root',password=None,key_filename=None,encoding='utf-8',timeout=15,debug=False):
+    def __init__(self,host,port=22,user='root',password=None,encoding='utf-8',timeout=15):
         self.host = host
         self.user = user
         self.encoding = encoding
         #判断 key_file 的用户名
-        if not key_filename and user != 'root':
+        '''if not key_filename and user != 'root':
             key_file = '/home/{}/.ssh/id_ida'.format(user)
             if not os.path.exists(key_file):
                 key_file = None
-
+        '''
         self.params = {
             'hostname': host,
             'port': port,
             'username': user,
             'password': password,
-            'key_filename': key_filename,
+            #'key_filename': key_filename,
             'timeout': timeout
         }
 
@@ -56,6 +56,11 @@ class SSHClient(object):
             print(e.__str__())
 
     def check_paramiko(self,cmd):
+        '''
+        :检查是否能登录机器并执行命令
+        :param cmd:
+        :return:
+        '''
         res = self.run_cmd(cmd)
         if res['ret'] == 0:
             return True,res
@@ -69,7 +74,7 @@ class SSHClient(object):
         :return:
         '''
         if self.is_connected:
-            return True
+            return
         try:
             self.client.connect(**self.params)
             self.is_connected = True

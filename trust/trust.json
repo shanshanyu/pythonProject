@@ -1,1 +1,1 @@
-{"ips": ["1.1.1.1", "2.2.2.2"], "ssh_port": 22, "password": ["a", "b"], "user": "root", "trust_user": "root", "ssh_params": {"1.1.1.1": {"host": "1.1.1.1", "port": 22, "user": "root", "password": "a"}, "2.2.2.2": {"host": "2.2.2.2", "port": 22, "user": "root", "password": "b"}}}
+{"ips": ["123.56.222.255"], "ssh_port": 30022, "password": ["ZXcv1324!@#$"], "user": "root", "trust_user": "root", "ssh_params": {"123.56.222.255": {"host": "123.56.222.255", "port": 30022, "user": "root", "password": "ZXcv1324!@#$"}}}

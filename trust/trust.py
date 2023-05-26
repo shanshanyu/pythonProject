@@ -116,13 +116,18 @@ class Trust(object):
         :return:
         '''
         for ip in self.conf['ips']:
-            password = self.conf['ssh_params'][ip]['password']
+            #password = self.conf['ssh_params'][ip]['password']
             cmd = "echo hello"
             logging.warning(
                 'paramiko.login({}) run({}) as {}'.format(ip,cmd,self.ssh_params[ip]['user'])
             )
             ssh_client = SSHClient(**self.ssh_params[ip])
-
+            login_res = ssh_client.check_paramiko(cmd)
+            if not login_res[0]:
+                logging.warning(login_res)
+                raise Exception('paramiko login{}:{}'.format(self.ssh_params[ip],login_res))
+            else:
+                logging.warning(login_res)
 
 
 
@@ -139,6 +144,8 @@ if __name__ == '__main__':
     main = Trust(args.conf_file)
     print(main.conf)
     main.check_login()
+
+    main.copy_program_to_hosts()
 
 
 
