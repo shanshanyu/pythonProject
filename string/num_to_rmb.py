@@ -37,4 +37,5 @@ def num_to_rmb(num):
 
 
 if __name__ == '__main__':
-    print(num_to_rmb(412345))
+    print(num_to_rmb(410045.35))
+    print(__file__)

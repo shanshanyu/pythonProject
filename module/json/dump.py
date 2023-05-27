@@ -8,8 +8,9 @@ import json
 
 d = {'a':1,'b':2}
 
-with open('test.txt','a') as f:
-    print(json.dump({'b':2,'c':3},f))
+with open('test.txt','a',encoding='utf-8') as f:
+    json.dump({'张三':2,'c':3},f,ensure_ascii=False)
+    f.write('\n')
 
 #print(json.dump(d))
 
