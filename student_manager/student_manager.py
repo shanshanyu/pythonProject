@@ -1,20 +1,79 @@
 # 2023/5/27  9:16
-import json
 
-def input_student():
+import os.path
+
+filename = 'stu_info.txt'
+
+def find_student():
+    pass
+
+def delete_student():
     while True:
-        stu_info = {}
+        stu_lst = []
+        if os.path.exists(filename):
+            stu_name = input('请输入需要删除的学生姓名：')
+            #读取信息放到列表中
+            with open(filename,'r',encoding='utf-8') as file:
+                stu_list = file.readlines()
+
+            flag = False
+            #在列表中修改信息
+            for item in stu_list:
+                #item = eval(item.strip())  #eval把字符串转换成字典
+                if stu_name == eval(item)['name']:
+                    stu_list.remove(item)
+                    flag = True
+                    with open(filename, 'w', encoding='utf-8') as file :
+                        for d in stu_list :
+                            file.write(d)
+                            break
+
+            if flag:
+                print(f'学生{stu_name}信息删除完成')
+            else:
+                print(f'未找到学生{stu_name}')
+        else:
+            print('学生信息为空！')
+
+        answer = input('是否继续删除学生信息(y/n)?: ')
+        if answer == 'y' or answer == 'Y':
+            continue
+        else:
+            break
+
+def update_student():
+    pass
+
+def sort_student():
+    pass
+
+def count_student():
+    pass
+
+def display_all_student():
+    pass
+
+def insert_student():
+    while True:
+        student = {}
         name = input('姓名：')
-        chinese = input('语文：')
-        math = input('数学：')
-        english = input('英语：')
-        stu_info['name']  = name if name else None
-        stu_info['chinese']  = chinese if chinese else None
-        stu_info['math'] = math  if math else None
-        stu_info['english']  = english if english else None
-        with open('stu_info.txt','a+',encoding='utf-8') as f:
-            f.write(json.dumps(stu_info,ensure_ascii=False))
-            f.write('\n')
+        student['name'] = name
+        #需要判断的分数是不是整数
+        try:
+            chinese = int(input('语文：'))
+            math = int(input('数学：'))
+            english = int(input('英语：'))
+        except:
+            print("输入的分数不是一个整数,请重新输入！")
+            continue
+        student['chinese'] = chinese
+        student['math'] = math
+        student['english'] = english
+
+        with open(filename,'a',encoding='utf-8') as file:
+            file.write(str(student)+'\n')
+
+        print(f'学生{name}插入完成！')
         choice = input('是否继续添加学生信息(y/n)?： ')
         if(choice == 'y' or choice == 'Y'):
             pass
@@ -50,11 +109,11 @@ def start_system():
             continue
 
         if choice == 1:
-            input_student()
+            insert_student()
         elif choice == 2:
-            pass
+            find_student()
         elif choice == 3:
-            pass
+            delete_student()
         elif choice == 4:
             pass
         elif choice == 5:
