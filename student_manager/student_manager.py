@@ -12,6 +12,11 @@ def delete_student():
         stu_lst = []
         if os.path.exists(filename):
             stu_name = input('请输入需要删除的学生姓名：')
+            if stu_name == '':  #判断字符串是否为空
+            #if not stu_name:
+                print('输入的学生姓名为空，请重新输入！')
+                continue
+
             #读取信息放到列表中
             with open(filename,'r',encoding='utf-8') as file:
                 stu_list = file.readlines()
@@ -20,7 +25,7 @@ def delete_student():
             #在列表中修改信息
             for item in stu_list:
                 #item = eval(item.strip())  #eval把字符串转换成字典
-                if stu_name == eval(item)['name']:
+                if stu_name == eval(item)['name']:   #每个 item 是一个包裹字典的字符串
                     stu_list.remove(item)
                     flag = True
                     with open(filename, 'w', encoding='utf-8') as file :
@@ -37,12 +42,60 @@ def delete_student():
 
         answer = input('是否继续删除学生信息(y/n)?: ')
         if answer == 'y' or answer == 'Y':
-            continue
+            pass
         else:
             break
 
 def update_student():
-    pass
+    while True:
+        stu_list = []
+        if os.path.exists(filename) :
+            stu_name = input('请输入需要修改的学生姓名：')
+            #if stu_name == '' :  # 判断字符串是否为空
+            if not stu_name:
+                print('输入的学生姓名为空，请重新输入！')
+                continue
+
+            # 读取信息放到列表中
+            with open(filename, 'r', encoding='utf-8') as file :
+                stu_list = file.readlines()
+
+            file = open(filename,'w',encoding='utf-8')
+
+
+            flag = False
+            for item in stu_list:
+                if stu_name == eval(item)['name']:
+                    flag = True
+                    print(f'找到学生{stu_name},请修改！')
+                    student = {}
+                    student['name']  = stu_name
+                    try:
+                        student['chinese']  = int(input('语文：'))
+                        student['math'] = int(input('数学：'))
+                        student['english'] = int(input('英语：'))
+                    except:
+                        print('输入的学生成绩不是数字，请重新输入！')
+
+                    file.write(str(student)+'\n')
+                else:
+                    file.write(item)
+
+                if flag:
+                    print(f'学生{stu_name}信息修改完成！')
+                else:
+                    print(f'学生{stu_name}未找到')
+
+            answer = input('是否继续修改学生信息(y/n)?: ')
+            if answer == 'y' or answer == 'Y':
+                pass
+            else:
+                break
+        else:
+            print('学生信息为空！')
+            break
+
+
 
 def sort_student():
     pass
@@ -57,6 +110,8 @@ def insert_student():
     while True:
         student = {}
         name = input('姓名：')
+        if name == '':
+            continue
         student['name'] = name
         #需要判断的分数是不是整数
         try:
@@ -115,7 +170,7 @@ def start_system():
         elif choice == 3:
             delete_student()
         elif choice == 4:
-            pass
+            update_student()
         elif choice == 5:
             pass
         elif choice == 6:

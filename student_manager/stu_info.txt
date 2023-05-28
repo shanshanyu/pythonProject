@@ -1,1 +1,1 @@
-{'name': '王五', 'chinese': 80, 'math': 80, 'english': 80}
+{'name': '张三', 'chinese': 50, 'math': 51, 'english': 52}
