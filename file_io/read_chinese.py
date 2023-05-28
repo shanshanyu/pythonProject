@@ -9,3 +9,8 @@ f1 = open('test.txt','r',encoding='utf-8')
 content = f1.read()
 print(content)
 f1.close()
+
+f2 = open('test.txt','rb')
+data = f2.readline()
+print(data,type(data))
+print(data.decode())
