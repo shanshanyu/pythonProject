@@ -1,1 +1,6 @@
+{'name': '赵六', 'chinese': 15, 'math': 20, 'english': 15}
 {'name': '张三', 'chinese': 50, 'math': 51, 'english': 52}
+{'name': '李四', 'chinese': 90, 'math': 91, 'english': 92}
+{'name': '王麻子', 'chinese': 10, 'math': 11, 'english': 12}
+{'name': '王五', 'chinese': 51, 'math': 51, 'english': 51}
+{'name': '喻杉杉', 'chinese': 100, 'math': 0, 'english': 30}

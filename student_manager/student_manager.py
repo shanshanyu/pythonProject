@@ -5,7 +5,37 @@ import os.path
 filename = 'stu_info.txt'
 
 def find_student():
-    pass
+    while True:
+        if os.path.exists(filename):
+            with open(filename,'r',encoding='utf-8') as file:
+                stu_list = file.readlines()
+                stu_name = input('请输入需要查找的学生姓名：')
+                if not stu_name:
+                    print('学生姓名为空，请重新输入！')
+                    continue
+
+            flag = False
+            for item in stu_list:
+                if stu_name == eval(item)['name']:
+                    #print(eval(item),type(eval(item)))  eval(item) 的值是一个字典
+                    flag = True
+                    print(f'找到学生{stu_name}')
+                    for key,val in eval(item).items():
+                        print(key+':'+str(val),end='\t')
+                    print('\n')
+                    break  #去掉 break，查找所有姓名为 stu_name 的学生
+
+            if not flag:
+                print(f'未找到学生{stu_name}')
+
+            answer = input('是否需要继续查找学生(y/n)?:')
+            if answer == 'y' or answer =='Y':
+                pass
+            else:
+                break
+        else:
+            print('学生信息为空！')
+            break
 
 def delete_student():
     while True:
@@ -95,17 +125,59 @@ def update_student():
             print('学生信息为空！')
             break
 
-
+def sort_func(d):
+    return d['chinese']
 
 def sort_student():
-    pass
+    #列表包含字典，如何根据字典中的某个键进行排序
+    if os.path.exists(filename):
+        with open(filename,'r',encoding='utf-8') as file:
+            stu_list = file.readlines()
+            stu_list_new = []
+            for item in stu_list:
+                d = eval(item)
+                stu_list_new.append(d)
+
+        #新列表如何排序？
+        #使用带 key 值的 sort 函数
+        stu_list_new.sort(key=sort_func)  #可以使用lamda 表达式
+        #print(stu_list_new)
+        #不需要修改文件
+        '''with open(filename,'w',encoding='utf-8') as file:
+            for item in stu_list_new:
+                file.write(str(item)+'\n')'''
+
+
+        print('排序完成')
+        for i in stu_list_new:
+            for key, val in i.items() :
+                print(key + ':' + str(val), end='\t')
+            print('')
+
+
+    else:
+        print('学生信息为空！')
 
 def count_student():
-    pass
+    if os.path.exists(filename):
+        with open(filename,'r',encoding='utf-8') as file:
+            stu_list = file.readlines()
+            print('学生总人数:{}'.format(len(stu_list)))
+    else:
+        print('学生信息为空！')
 
 def display_all_student():
-    pass
-
+    if os.path.exists(filename):
+        print('学生信息如下：')
+        with open(filename) as file:
+            stu_list = file.readlines()
+            for item in stu_list:
+                d = eval(item)
+                for key, val in eval(item).items():
+                    print(key + ':' + str(val), end='\t')
+                print('')
+    else:
+        print('学生信息为空！')
 def insert_student():
     while True:
         student = {}
@@ -172,11 +244,11 @@ def start_system():
         elif choice == 4:
             update_student()
         elif choice == 5:
-            pass
+            sort_student()
         elif choice == 6:
-            pass
+            count_student()
         elif choice == 7:
-            pass
+            display_all_student()
         elif choice == 0:
             double_check = input('是否要退出系统(y/n)?: ')
             if double_check == 'y' or double_check == 'Y':
