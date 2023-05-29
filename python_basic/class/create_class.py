@@ -24,3 +24,6 @@ a.run()
 
 b = a.run  #将实例方法赋值给变量，可以做到自动绑定对象
 b()
+
+print(dir(Parent))
+print(dir(a))

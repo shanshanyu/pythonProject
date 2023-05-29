@@ -10,3 +10,4 @@ class Item():
         pass
 
 a = Item()
+print(a)
