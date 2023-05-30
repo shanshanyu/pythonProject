@@ -8,3 +8,7 @@ a,*b,c = range(10)
 print(a)
 print(b)
 print(c)
+
+
+a = set()
+a.add

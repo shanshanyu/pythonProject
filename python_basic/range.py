@@ -25,3 +25,7 @@ print('-' * 40)
 
 for i in range(1,5,2):
     print(i)
+print('-'*100)
+
+for i in range(4,-1,-1):  #列表逆序遍历
+    print(i)
