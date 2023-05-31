@@ -13,7 +13,7 @@ print(file_data,type(file_data))
 f.seek(0,0)
 
 file_data = f.readline()
-print(file_data,type(file_data))
+print(file_data,type(file_data),file_data.encode())  #readline 读取一行，会读出结尾的换行符 \n
 
 
 
