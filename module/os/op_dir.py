@@ -21,7 +21,7 @@ for root,dirs,files in os.walk(os.getcwd()):
 #os.system('notepad')  #执行命令，打开记事本
 #cur_dir = os.path.abspath('.')
 #print(cur_dir)
-#os.startfile(os.path.join(cur_dir,'test.py'),'print')
+#os.startfile(os.path.join(cur_dir,'create_workbook.py'),'print')
 
 '''
 os模块的常用方法

@@ -12,9 +12,12 @@ print(df)
 
 #分组  聚合
 
-new_df = df.groupby(['name','subject'])
+new_df = df.groupby(['name','subject'])  #分组  DataFrameGroupby 对象
 print(new_df,type(new_df))
 
-new_df = df.groupby(['name','subject']).mean()
-print(new_df)
+new_df = df.groupby(['name','subject']).mean()  #分组后取中位数
+print(new_df,type(new_df))
+
+new_df = df.groupby(['name']).sum()  #分组后求和
+print(new_df,type(new_df))
 

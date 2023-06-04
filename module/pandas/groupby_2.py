@@ -1,5 +1,5 @@
 '''
-create_time: 2023/6/1 23:02
+create_time: 2023/6/2 20:04
 author: yss
 version: 1.0
 '''
@@ -10,6 +10,7 @@ data = {'product':['a','b','c','a','b','c'],'sale-date':['2022-01-01','2022-01-0
 df = pd.DataFrame(data)
 print(df)
 
-#生成透视表   以product 为索引，日期为
-new_df = df.pivot_table(index='product',columns='sale-date',values='money',aggfunc='median')
+new_df = df.groupby('product')  #只显示一列 product   按一列进行分组
+#new_df = df.groupby(['product','sale-date'])
 print(new_df)
+print(new_df.sum('money'))  #分组聚合
