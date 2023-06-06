@@ -8,7 +8,7 @@ version: 1.0
 
 import paramiko
 transport = paramiko.Transport(('123.56.222.255',30022))
-transport.connect(username='yushanshan',password='iflytek')
+transport.connect(username='yushanshan',password='xx')
 
 sftp = paramiko.SFTPClient.from_transport(transport)  #SFTPClient 是一个类方法
 

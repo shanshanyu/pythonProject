@@ -46,10 +46,6 @@ class SSHClient(object):
     def run_cmd(self,cmd,timeout=5):
         self.connect()
         stdin_fd,stdout_fd,stderr_fd = self.client.exec_command(cmd,timeout,get_pty=True)
-
-        stdin_fd.write('iflytek'+'\n')
-        stdin_fd.flush()
-
         stdout, stderr = stdout_fd.read().decode('utf-8'), stderr_fd.read().decode('utf-8')
         ret = stdout_fd.channel.recv_exit_status()
         return {'ret': ret,'stdout': stdout,'stderr': stderr}
@@ -63,7 +59,7 @@ class SSHClient(object):
 
 
 if __name__ == '__main__':
-    client = SSHClient(host='123.56.222.255',port=30022,user='yushanshan',password='iflytek')
+    client = SSHClient(host='123.56.222.255',port=30022,user='yushanshan',password='xx')
     client.connect()
-    ret = client.run_cmd('sudo df -h /')
+    ret = client.run_cmd('df -h /')
     print(ret)

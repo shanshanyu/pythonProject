@@ -10,7 +10,7 @@ client = paramiko.SSHClient()
 client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
 # 连接远程主机
-client.connect(hostname='123.56.222.255', username='yushanshan', password='iflytek',port=30022)
+client.connect(hostname='123.56.222.255', username='yushanshan', password='xx',port=30022)
 
 # 执行命令，启用伪终端模式
 stdin, stdout, stderr = client.exec_command('ls /', get_pty=True)

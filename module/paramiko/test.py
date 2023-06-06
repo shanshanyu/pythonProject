@@ -10,7 +10,7 @@ import paramiko
 client = paramiko.SSHClient()
 #client.set_missing_host_key_policy(paramiko.RejectPolicy())
 client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-client.connect(hostname='123.56.222.255',port=30022,username='yushanshan',password='iflytek')
+client.connect(hostname='123.56.222.255',port=30022,username='yushanshan',password='xx')
 stdin,stdout,stderr = client.exec_command('df -h')
 res = stdout.channel.recv_exit_status()
 print('ret:',res)
