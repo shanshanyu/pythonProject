@@ -22,6 +22,7 @@ for row in old_ws[1:2]:  #返回的值是元组嵌套元组，一个元组元素
 for item in old_ws.merged_cells:
     print(item,type(item))
     ws.merge_cells(str(item))  #可行
+
         # 处理合并单元格
         #if old_ws.cell(row=source_cell.row, column=source_cell.column).coordinate in old_ws.merged_cells:
         #    merged_range = old_ws.merged_cells.remove(old_ws.cell(row=source_cell.row, column=source_cell.column).coordinate)
@@ -41,4 +42,4 @@ for item in old_ws.merged_cells:
 
 
 
-wb.save(r'test1.xlsx')
+#wb.save(r'test1.xlsx')
