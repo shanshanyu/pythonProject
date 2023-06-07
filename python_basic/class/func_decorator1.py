@@ -9,10 +9,12 @@ version: 1.0
 def funA(fn):
     print('A')
     fn()
-    return 'fkit'
+    return 'fkit'  #如果 funA没有返回值，那么 B 就是 None
+
 
 @funA
 def funB():
     print('B')
+
 
 print(funB,type(funB))  #funB被替换成了 fkit 字符串
