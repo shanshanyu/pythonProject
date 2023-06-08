@@ -20,12 +20,13 @@ def check_ip(ip):
         return False
 
 
+#定义 SSHClient 类，用来管理 ssh client，不需要手动释放连接
 class SSHClient(object):
-    def __init__(self,host,port=22,user='root',password=None,encoding='utf-8',timeout=15):
-        self.host = host
+    def __init__(self,host,port=22,user='root',password=None,key_filename=None,encoding='utf-8',timeout=10): #连接超时 10s
+        self.hostname = host
         self.user = user
         self.encoding = encoding
-        #判断 key_file 的用户名
+        #判断 key_file 的用户名,key_filename 感觉没用
         '''if not key_filename and user != 'root':
             key_file = '/home/{}/.ssh/id_ida'.format(user)
             if not os.path.exists(key_file):
@@ -36,7 +37,7 @@ class SSHClient(object):
             'port': port,
             'username': user,
             'password': password,
-            #'key_filename': key_filename,
+            'key_filename': key_filename,
             'timeout': timeout
         }
 
@@ -52,8 +53,8 @@ class SSHClient(object):
     def  __del__(self):
         try:
             self.client.close()
-        except Exception as e:
-            print(e.__str__())
+        except Exception:
+            pass
 
     def check_paramiko(self,cmd):
         '''
@@ -74,27 +75,47 @@ class SSHClient(object):
         :return:
         '''
         if self.is_connected:
-            return
+            return True
         try:
             self.client.connect(**self.params)
             self.is_connected = True
         except Exception as e:
-            print(e.__str__())
+            print(e)
 
-    def run_cmd(self,cmd,timeout=15):
+    def run_cmd(self,cmd,timeout=15):  #命令执行超时 15s
         '''
         :执行命令
         :param cmd:
         :param timeout:
         :return:
         '''
+        #如果
         self.connect()
-        stdin_fd,stdout_fd,stderr_fd = self.client.exec_command(cmd,timeout=timeout)
+
+        stdin_fd,stdout_fd,stderr_fd = self.client.exec_command(cmd,timeout=timeout,get_pty=True)
         ret = stdout_fd.channel.recv_exit_status()
         stdout,stderr = stdout_fd.read().decode(self.encoding),stderr_fd.read().decode(self.encoding)
         return {'ret':ret,'stdout':stdout,'stderr':stderr}
 
+    def get_transport(self):  #获取 transport
+        return self.client.get_transport()
 
+
+    def copy_from_local(self,local_file,remote_file,timeout=1800): #从本地复制文件到远端
+        self.connect()
+
+        sftp = paramiko.SFTPClient.from_transport(self.client.get_transport())
+        sftp.get_channel().settimeout(timeout)
+        sftp.put(local_file,remote_file)
+        sftp.close()
+
+    def copy_from_remote(self,remote_file,local_file,timeout=1800): #从远端复制文件到本地
+        self.connect()
+
+        sftp = paramiko.SFTPClient.from_transport(self.client.get_transport())
+        sftp.get_channel().settimeout(timeout)
+        sftp.get(remote_file,local_file)
+        sftp.close()
 
 
 
