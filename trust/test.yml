@@ -8,4 +8,4 @@ password: ['x']
 # 执行检测的用户的 ssh 用户名，默认不用改，为当前执行用户，与 password 相关联
 user: root
 # 被做互信的用户，默认为当前执行用户做互信；若不为当前当前执行用户做互信，则需要当前执行用户用 sudo 权限
-trust_user: root
+trust_user: yushanshan

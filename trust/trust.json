@@ -1,1 +1,1 @@
-{"ips": ["123.56.222.255"], "ssh_port": 30022, "password": ["ZXcv1324!@#$"], "user": "root", "trust_user": "root", "ssh_params": {"123.56.222.255": {"host": "123.56.222.255", "port": 30022, "user": "root", "password": "ZXcv1324!@#$"}}}
+{"ips": ["123.56.222.255"], "ssh_port": 30022, "password": ["x"], "user": "root", "trust_user": "yushanshan", "ssh_params": {"123.56.222.255": {"host": "123.56.222.255", "port": 30022, "user": "root", "password": "x"}}}

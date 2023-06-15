@@ -5,7 +5,12 @@ version: 1.0
 '''
 import os.path
 import re
+import threading
+
 import paramiko
+import psutil
+
+
 def check_ip(ip):
     '''
     :检查给定的字符串是否是 ip
@@ -18,6 +23,40 @@ def check_ip(ip):
         return True
     else:
         return False
+
+
+def get_self_ip(ips):  #获取本机 ip，找到了返回 ip，如果没有找到抛出异常
+    local_address = [address[1][0].address for address in psutil.net_if_addrs().items()]
+    for address in local_address:
+        if address in ips:
+            ip = address
+            break
+    else:
+        raise Exception('local_ip not in ips')
+
+    return ip
+
+
+def sa_threading(main_fun,action_name,thread_list,done_counter='done'):
+    running_threads = list()
+    counters = dict()
+    lock = threading.Lock()
+
+    def main_wrapper(key,counters,lock):
+        if type(counters) != dict:
+            raise Exception('keyError: {} should be a dict.'.format(counters))
+
+        try:
+            return main_fun(key,counters,lock)
+        except Exception as e:
+            with lock:
+                counters['error']  = 1
+
+    for thread in thread_list:
+        t = threading.Thread(target=main_wrapper,name=thread,args=(thread,counters,lock))
+
+
+
 
 
 #定义 SSHClient 类，用来管理 ssh client，不需要手动释放连接
