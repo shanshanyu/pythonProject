@@ -15,3 +15,7 @@ print(type(a))
 
 #获取变量的值
 print(a)
+
+a = 'jerry'
+print(id(a))  #a 的引用变了
+print(id(b))  #b 的引用没变
