@@ -33,3 +33,22 @@ print(a)
 a.pop(1)
 print(a)
 
+a = [1,2,3,4,5]
+a[:] = [2]  #列表切片当左值会覆盖修改源列表
+print(a)
+
+a = [1,2,3,4,5]
+print(id(a),id(a[:]))  #列表整个切片和原列表是不相等的
+
+b = ['a','b','c']
+a = a+b  #会得到一个新的列表对象
+print(id(a))
+
+a = [1,2,3,4,5]
+b = a[:]
+print('id(a) = {}'.format(id(a)))
+print('id(b) = {}'.format(id(b)))  #b 是 a 的浅拷贝，a和b的值不相等
+
+print(id(a[0]),id(b[0]))  #a[0] 和 b[0] 的值是相等的
+
+
