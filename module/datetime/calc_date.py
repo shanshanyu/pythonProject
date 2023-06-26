@@ -47,4 +47,3 @@ if __name__ == '__main__':
     #calc_date()
     print(day_to_date(19001))
     print(date_to_day())
-
