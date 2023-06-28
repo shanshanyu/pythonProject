@@ -3,6 +3,7 @@ create_time: 2023/6/28 16:17
 author: yss
 version: 1.0
 '''
+#拉取partition末尾的1w行数据
 
 from kafka import KafkaConsumer,TopicPartition
 
