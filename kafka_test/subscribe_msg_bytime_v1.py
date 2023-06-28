@@ -27,7 +27,9 @@ def subscribe_topic(bootstrap_servers,start_offset,end_time):
     consumer = KafkaConsumer(bootstrap_servers=bootstrap_servers)
 
     #assign partition
-    consumer.assign(start_offset.keys()) #如果不用 assign，需要先获取partition元数据，然后再通过调用seek(partion，offset)
+    consumer.assign(start_offset.keys())
+    #如果不用 assign，需要先获取partition元数据，然后再通过调用seek(partion，offset),还取不到没有partition对应的offset
+
 
     for item in start_offset.values(): #设置seek 的 offset
         for key, value in item.items():
