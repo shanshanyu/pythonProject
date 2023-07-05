@@ -5,10 +5,8 @@ version: 1.3
 解决v1.1中的两个问题
 画出来：
 根据时间戳找offset->设置当前的offset->拉取数据
-如果拉取到的offset等于当前partition最大的offset，编写一个函数判断是否所有的partition都达到最大offset
-如果拉取到的时间等于截止时间，编写一个函数判断是否所有的partition都达到最大的时间
-
-用多线程实现，每个线程拉取一个有数据的 partition
+用多线程实现要方便很多
+根据时间戳找 offset->仅读取找到之间时间戳的partition->创建多线程，每个线程读取一个partition（参数传递partition和offset）
 '''
 
 from kafka import TopicPartition,KafkaConsumer
@@ -31,7 +29,7 @@ def subscribe_partition(partition,offset,bootstrap_servers,end_time):
         if msg.timestamp >= end_time or msg.offset >= max_offset-1:
             break
         with lock:
-            messages.append(msg)
+            messages.append(msg.value.decode())
 
 
     consumer.close()
@@ -56,12 +54,17 @@ def subscribe_topic(topic_name,bootstrap_servers,start_time,end_time):
     start_offsets = get_offset_by_time(topic_name,bootstrap_servers,start_time)
 
     threads = []
+    flag = False
     for i in start_offsets.values():
         for k,v in i.items():
             if v:
+                flag = True
                 t = threading.Thread(target=subscribe_partition,args=(k,v,bootstrap_servers,end_time))  #传递 TopicPartition 对象
                 threads.append(t)
                 t.start()
+
+    if not flag:
+        print('指定的时间点找不到数据，检查输入的时间是否正确以及服务器的时间')
 
     for t in threads:
         t.join()
