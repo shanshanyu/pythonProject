@@ -6,6 +6,7 @@ version: 1.0
 
 def get_prime(start,end):
     for i in range(start,end+1):
+
         flag = True
         for j in range(2,int(i/2)):      #for(i = 2; i < j/2;i++)
             if i % j == 0:
