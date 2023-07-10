@@ -24,3 +24,4 @@ def bin_search(num,lst,lst_len):  #lst 要求有序，并且是升序
 
 if __name__ == '__main__':
     res = bin_search(6,sorted(lst),lst_len)
+    print(res)
