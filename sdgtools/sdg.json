@@ -1,3 +1,13 @@
 {
-  "a": 1234
+  "Incorrect result size: expected 1, actual 2": "属性或事件重名，根据上下文判断是哪个属性或事件，需要删掉一个；如果正在创建属性或事件，引导客户修改命名",
+  "AsyncDownloadServiceImpl.rewriteBookmarkId(AsyncDownloadServiceImpl.java:283)":"sa bug,需要升级 sa 版本到 2.3.3.154+",
+  "java.util.NoSuchElementException: Timeout waiting for idle object": "临时解决方法：给 sdg web 内存增大1g后重启，根治需要升级 sdg 版本到 sdg 0.12+",
+  "are not comparable:": "存在同名属性，属性类型不相同，需要删掉一个属性，然后升级到 sdg 0.12+",
+  "MYSQLIntegrityConstraintViolationException: Duplicate entry ": "删属性bug，按此文档修复：https://doc.sensorsdata.cn/pages/viewpage.action?pageId=257353451",
+  "java.lang.ClassNotFoundException: cloudatlas.shaded.com.fasterxml.jackson.databind.JsonNode": "sca bug,需要升级到 sca:0.7.0.21+",
+  "java.lang.NumberFormatException: null": "代码bug，未兼容大小写白名单场景，需要升级到 sdg 0.12+",
+  "AvroTableWriter.preWriteRecord": "版本bug，需要升级到 sdg 0.12+",
+  "Duplicate key PropertyBean": "预定义属性和上报数据的属性存在重名，按照sdg知识库2.28的方案处理；或虚拟属性和正常的属性存在重名需要删掉或修改虚拟属性",
+  "Cannot get a STRING value from a ERROR cell": "上传的文件有问题，检查下文件内容",
+  "java.io.StreamCorruptedException: invalid type code: 2E": "sca bug，需要升级sca 版本到 sca 0.7.1+"
 }

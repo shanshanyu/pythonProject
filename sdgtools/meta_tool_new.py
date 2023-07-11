@@ -84,7 +84,7 @@ class SSHClient(object):
         # 如果
         self.connect()
 
-        stdin_fd, stdout_fd, stderr_fd = self.client.exec_command(cmd, timeout=timeout, get_pty=False)
+        stdin_fd, stdout_fd, stderr_fd = self.client.exec_command(cmd, timeout=timeout, get_pty=True)
         stdout, stderr = stdout_fd.read().decode(self.encoding), stderr_fd.read().decode(self.encoding)
         ret = stdout_fd.channel.recv_exit_status()
         return {'ret' : ret, 'stdout' : stdout, 'stderr' : stderr}
@@ -98,7 +98,7 @@ def thr_func(host, port, data) :
     log_path = os.environ.get('SENSORS_DATA_GOVERNOR_LOG_DIR')
     log_file = os.path.join(log_path, 'web', 'web.log')
     print(log_file)
-    cmd = f'tail -10000 {log_file}'
+    cmd = f'tail -1000000 {log_file}'
     print(cmd)
 
     res = ssh_client.run_cmd(cmd)
