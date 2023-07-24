@@ -1,0 +1,8 @@
+ips: ['123.56.222.255','1,1,1,1']
+# ssh 端口，不可为空
+ssh_port: 30022
+# 执行检测的用户的 ssh 密码，若所有节点密码相同，则只需填写一个字符串，如 Password；若节点之间密码不同，则以列表形式填写，如 ['Passwd1', 'Passwd2', 'Passwd3']
+password: ['x','y']
+user: root
+# 被做互信的用户，默认为当前执行用户做互信；若不为当前当前执行用户做互信，则需要当前执行用户用 sudo 权限
+trust_user: yushanshan
