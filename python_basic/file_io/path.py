@@ -20,7 +20,7 @@ pp3 = PurePath()
 print(type(pp3))
 print(pp3)
 
-pp4 = Path('..')
+pp4 = Path('../..')
 for i in pp4.iterdir():
     print(i)
 

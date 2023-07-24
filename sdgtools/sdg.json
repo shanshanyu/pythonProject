@@ -9,5 +9,7 @@
   "AvroTableWriter.preWriteRecord": "版本bug，需要升级到 sdg 0.12+",
   "Duplicate key PropertyBean": "预定义属性和上报数据的属性存在重名，按照sdg知识库2.28的方案处理；或虚拟属性和正常的属性存在重名需要删掉或修改虚拟属性",
   "Cannot get a STRING value from a ERROR cell": "上传的文件有问题，检查下文件内容",
-  "java.io.StreamCorruptedException: invalid type code: 2E": "sca bug，需要升级sca 版本到 sca 0.7.1+"
+  "java.io.StreamCorruptedException: invalid type code: 2E": "sca bug，需要升级sca 版本到 sca 0.7.1+",
+  "DATASOURCE_INFO_CONFIG_EXCEPTION": "数据源连接不上，检查所有 sdg web 节点到数据源的连接是否正常",
+  "java.lang.NoSuchMethodError: com.sensorsdata.framework.common.avrotable.AvroTableWriter.preWriteRecord": "sdg 0.8 版本代码bug，升级到 sdg 0.12+"
 }
