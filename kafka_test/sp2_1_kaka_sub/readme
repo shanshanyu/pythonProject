@@ -1,0 +1,4 @@
+python3.9 版本与 kafka-python 存在兼容问题，直接调用会抛出异常：
+kafka.errors.UnsupportedCodecError: UnsupportedCodecError: Libraries for lz4 compression codec not found
+
+所以需要在 sp2_1_kafka_sub 目录下封装一个 python3 包，直接调用这个 python，不使用系统的 python

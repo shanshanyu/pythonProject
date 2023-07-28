@@ -1,27 +1,13 @@
 '''
-create_time: 2023/7/20 17:05
+create_time: 2023/7/28 09:38
 author: yss
 version: 1.0
-'''
-'''
-create_time: 2023/7/5 11:19
-author: yss
-version: 1.3
-解决v1.1中的两个问题
-画出来：
-根据时间戳找offset->设置当前的offset->拉取数据
-用多线程实现要方便很多
-根据时间戳找 offset->仅读取找到之间时间戳的partition->创建多线程，每个线程读取一个partition（参数传递partition和offset）
-
-不把数据放到list中，直接打印出来，不需要线程加锁了
-按天订阅消息
 '''
 
 from kafka import TopicPartition,KafkaConsumer
 from datetime import datetime,timedelta
-import argparse
 import threading
-
+import argparse
 
 
 
@@ -36,8 +22,6 @@ def subscribe_partition(partition,offset,bootstrap_servers,end_time):
         if msg.timestamp >= end_time or msg.offset >= max_offset-1:
             break
         print(msg.value.decode())
-
-
 
     consumer.close()
 
@@ -59,7 +43,6 @@ def get_offset_by_time(topic_name,bootstrap_servers,timestamp):  #根据timestam
 def subscribe_topic(topic_name,bootstrap_servers,start_time,end_time):
     # 获取指定时间戳的offset，start_offsets 结构中可能存在offset 为 None 的成员
     start_offsets = get_offset_by_time(topic_name,bootstrap_servers,start_time)
-    print(start_offsets)
 
     threads = []
     flag = False
@@ -78,22 +61,18 @@ def subscribe_topic(topic_name,bootstrap_servers,start_time,end_time):
         t.join()
 
 
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='订阅kafka某个时间点的数据')
     parser.add_argument('topic_name', help='输入topic_name,比如event_topic')
     parser.add_argument('bootstrap_servers', help='输入kafka broker 的地址，比如10.1.1.1:9092')
-    parser.add_argument('day', help='输入天，比如20230628')
+    parser.add_argument('start_hour', help='输入小时，比如2023062818')
+    parser.add_argument('end_hour', help='输入小时，比如2023062820')
     args = parser.parse_args()
 
-    time_start = datetime.strptime(args.day, '%Y%m%d')  # 获得 datetime 对象,start_time
-    time_end = time_start + timedelta(days=7)  # end_time
-    print(time_start)
-    print(time_end)
+    time_start = datetime.strptime(args.start_hour, '%Y%m%d%H')  # 获得 datetime 对象,start_time
+    time_end = datetime.strptime(args.end_hour, '%Y%m%d%H')  # 获得 datetime 对象,start_time
+    #time_end = time_start + timedelta(hours=1)  # end_time
 
     subscribe_topic(args.topic_name,args.bootstrap_servers,time_start.timestamp()*1000,time_end.timestamp()*1000)
-
-
-
-
-
-

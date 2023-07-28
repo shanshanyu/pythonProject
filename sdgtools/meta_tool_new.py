@@ -12,6 +12,9 @@ import json
 import paramiko
 import os
 
+MY_DIR = os.path.dirname(os.path.abspath(__file__))
+LOG_FILE = os.path.join(MY_DIR,'web.log')
+
 #定义 SSHClient 类，用来管理 ssh client，不需要手动释放连接
 class SSHClient(object):
     def __init__(self,host,port=22,user='root',password=None,key_filename=None,encoding='utf-8',timeout=10): #连接超时 10s
@@ -98,17 +101,17 @@ def thr_func(host, port, data) :
     log_path = os.environ.get('SENSORS_DATA_GOVERNOR_LOG_DIR')
     log_file = os.path.join(log_path, 'web', 'web.log')
     print(log_file)
-    cmd = f'tail -1000000 {log_file}'
+    cmd = f'tail -10000000 {log_file} > {LOG_FILE}'
     print(cmd)
 
-    res = ssh_client.run_cmd(cmd)
+    ssh_client.run_cmd(cmd)
     # print('stdout',res['stdout'])
     # print('stderr', res['stderr'])
 
-    for line in res['stdout'].split('\n') :
-        for key in data :
-            if key in line :
-                print('发现问题,解决方法：', data[key])
+    for key in data:
+        res = ssh_client.run_cmd(f'cat {LOG_FILE}|grep "{key}"')
+        if res['stdout']:
+            print(data[key])
 
 
 def analysis() :

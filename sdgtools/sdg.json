@@ -11,5 +11,6 @@
   "Cannot get a STRING value from a ERROR cell": "上传的文件有问题，检查下文件内容",
   "java.io.StreamCorruptedException: invalid type code: 2E": "sca bug，需要升级sca 版本到 sca 0.7.1+",
   "DATASOURCE_INFO_CONFIG_EXCEPTION": "数据源连接不上，检查所有 sdg web 节点到数据源的连接是否正常",
-  "java.lang.NoSuchMethodError: com.sensorsdata.framework.common.avrotable.AvroTableWriter.preWriteRecord": "sdg 0.8 版本代码bug，升级到 sdg 0.12+"
+  "java.lang.NoSuchMethodError: com.sensorsdata.framework.common.avrotable.AvroTableWriter.preWriteRecord": "sdg 0.8 版本代码bug，升级到 sdg 0.12+",
+  "property cname is duplicated": "cname重名，请检查虚拟属性的cname是否和虚拟属性或预置属性的cname重名"
 }
