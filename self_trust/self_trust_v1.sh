@@ -9,7 +9,7 @@ authorized_key_path=$HOME/.ssh/authorized_keys
 #判断pub_key 文件是否存在，不存在则创建
 [ ! -f ${self_pub_key_path} ] && echo |ssh-keygen -t rsa -q -N '' >/dev/null 2>&1
 
-[ -f ${self_pub_key_path} ] && echo 'Generate pub key success.' || 'Generate pub key failed.'
+[ -f ${self_pub_key_path} ] && echo 'Generate pub key success.' || (echo 'Generate pub key failed.' && exit 2)
 
 
 #判断pub_key 是否在 authorized_keys 文件中
