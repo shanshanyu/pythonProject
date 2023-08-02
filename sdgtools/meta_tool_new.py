@@ -100,9 +100,9 @@ def thr_func(host, port, data) :
     ssh_client = SSHClient(host, port, 'sa_cluster')
     log_path = os.environ.get('SENSORS_DATA_GOVERNOR_LOG_DIR')
     log_file = os.path.join(log_path, 'web', 'web.log')
-    print(log_file)
+    mkdir_cmd = f'mkdir -p {MY_DIR}'
+    ssh_client.run_cmd(mkdir_cmd)
     cmd = f'tail -10000000 {log_file} > {LOG_FILE}'
-    print(cmd)
 
     ssh_client.run_cmd(cmd)
     # print('stdout',res['stdout'])
