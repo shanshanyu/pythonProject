@@ -23,6 +23,9 @@ def sa_threading(main_fun,thread_list):
         t.start()
         running_thread.append(t)
 
+    for thread in running_thread:
+        thread.join()
+
 
 
 
@@ -54,8 +57,11 @@ class SSHClient:
     def connect(self):
         if self.connected:
             return True
-        self.client.connect(**self.params)
-
+        try:
+            self.client.connect(**self.params)
+        except:
+            print('{} connect failed.'.format(self.params['hostname']))
+            exit(1)
     def run_cmd(self,cmd,timeout=15):
         if not self.connected:  #如果没有建立连接，先建立连接
             self.connect()
@@ -73,7 +79,15 @@ class SSHClient:
         sftp = paramiko.SFTPClient.from_transport(self.client.get_transport())
         sftp.get_channel().settimeout(timeout)
         sftp.get(remote_file,local_file)
+        sftp.close()
 
+    def copy_from_local(self,local_file,remote_file,timeout=1800):
+        self.connect()
+
+        sftp = paramiko.SFTPClient.from_transport(self.client.get_transport())
+        sftp.get_channel().settimeout(timeout)
+        sftp.put(local_file,remote_file)
+        sftp.close()
 
 
 class Trust:
@@ -83,10 +97,13 @@ class Trust:
         self.trust_user = self.conf['trust_user']
         self.local_program_dir = MY_DIR
         self.remote_program_dir = self.local_program_dir
-        self.temp_ssh_dir = '/tmp'
+        self.tmp_ssh_dir = '/tmp'
         self.real_ssh_dir = '/root/.ssh' if self.trust_user == 'root' else '/home/{}/.ssh'.format(self.trust_user)
         self.real_authorized_keys = '{}/authorized_keys'.format(self.real_ssh_dir)
         self.ips = self.conf['ips']
+
+        self.local_all_keys = '{}/runtime/authorized_keys.all'.format(self.local_program_dir)
+        self.remote_all_keys = '{}/runtime/authorized_keys.all'.format(self.remote_program_dir)
 
     def parse_conf(self,conf_file):
         #print(os.path.abspath(conf_file))
@@ -122,37 +139,91 @@ class Trust:
 
         return conf
 
+    def check_login(self):
+        for ip in self.ssh_params:
+            ssh_client = SSHClient(**self.ssh_params[ip])
+            ret = ssh_client.run_cmd('echo hello!')
+            if ret['ret'] != 0:
+                print('{} login failed.'.format(ip))
+                exit(1)
+
+    def copy_program_to_hosts(self):
+        '''
+        把程序复制到所有的主机上
+        :return:
+        '''
+        def copy_from_local(host):
+            ssh_client = SSHClient(**self.ssh_params[host])
+            ssh_client.copy_from_local(self.local_program_dir,self.remote_program_dir)
+
+        sa_threading(copy_from_local,self.ips)
+
+    def collect_authorized_keys(self):
+        '''
+        把主机上所有的 keys 放到一个文件中
+        :return:
+        '''
+        for host in self.ips:
+            host_authorized_keys = '{}/runtime/{}_authorized_keys.{}'.format(self.local_program_dir,self.trust_user,host)
+
+            with open(host_authorized_keys,'r',encoding='utf-8') as s:
+                keys = s.readlines()
+
+            with open(self.local_all_keys,'a+',encoding='utf-8') as d:
+                d.seek(0)
+                current_keys = d.readline()
+
+                for key in keys:
+                    if key not in current_keys:
+                        d.write(key)
+
+    def release_keys(self):
+        '''
+        每台机器上把全部的local_all_keys加到 authorized_keys中
+        :return:
+        '''
+        self.collect_authorized_keys()
+        def release_key(host):
+            ssh_client = SSHClient(**self.ssh_params[host])
+            ssh_client.copy_from_local(self.local_all_keys,self.remote_all_keys)
+            cp_keys_cmd = 'cat {} >> {}'.format(self.local_all_keys,self.real_authorized_keys)
+            ssh_client.run_cmd(cp_keys_cmd)
+
+        sa_threading(release_key,self.ips)
+
+
     def self_trust(self):
         def trust(host):  #在 host 上执行自身免密并复制 authorized_keys 到 /tmp
             ssh_client = SSHClient(**self.ssh_params[host])
-            trust_cmd = '/bin/bash {}/script/self_trust.sh'
+            trust_cmd = '/bin/bash {}/script/self_trust.sh'.format(self.remote_program_dir)
             res = ssh_client.run_cmd(trust_cmd)
             if res['ret'] != 0:
                 raise Exception(res)
 
             #复制 authrized_keys 到 tmp 目录
-            remote_temp_authorized_keys = '{}/{}_authorized_keys.{}'.format(self.temp_ssh_dir,self.trust_user,host)
-            temp_keys_cmd = 'cp {} {}'.format(self.real_authorized_keys,remote_temp_authorized_keys)
-            ssh_client.run_cmd(temp_keys_cmd)
+            remote_tmp_authorized_keys = '{}/{}_authorized_keys.{}'.format(self.tmp_ssh_dir,self.trust_user,host)
+            tmp_keys_cmd = 'cp {} {}'.format(self.real_authorized_keys,remote_tmp_authorized_keys)
+            ssh_client.run_cmd(tmp_keys_cmd)
             if res['ret'] != 0:
                 raise Exception(res)
 
             local_host_authorized_keys = '{}/runtime/{}_authorized_keys.{}'.format(MY_DIR,self.trust_user,host)
-            ssh_client.copy_from_remote(remote_temp_authorized_keys,local_host_authorized_keys)
+            ssh_client.copy_from_remote(remote_tmp_authorized_keys,local_host_authorized_keys)
 
-        sa_threading(trust, 'self_trust', self.ips, wait_interval=2)
+        sa_threading(trust, self.ips)
 
 
 if __name__ == '__main__':
-    t = Trust('../trust/test1.yml')
-    print(t.conf)
-    print(t.ssh_params)
+    main = Trust('test1.yml')
+    print(main.conf)
+    print(main.ssh_params)
+    main.check_login()
 
-'''
-if __name__ == '__main__':
-    client = SSHClient(hostname='10.129.20.81',username='root',password='MhxzKhl2015')
-    result = client.run_cmd('lbn /')
-    print(result)
-'''
+    main.copy_program_to_hosts()
+
+    main.self_trust()
+
+    main.release_keys()
+
 
 
