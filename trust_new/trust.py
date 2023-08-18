@@ -11,6 +11,7 @@ import yaml
 import threading
 
 MY_DIR = os.path.dirname(os.path.abspath(__file__))  #获取当前路径
+WORK_DIR = os.path.join(MY_DIR,'..')
 
 
 def sa_threading(main_fun,thread_list):
@@ -95,8 +96,13 @@ class Trust:
         self.conf = self.parse_conf(conf_file)
         self.ssh_params = self.conf['ssh_params']
         self.trust_user = self.conf['trust_user']
+
         self.local_program_dir = MY_DIR
+        self.program_dir_name = os.path.basename(MY_DIR)
         self.remote_program_dir = self.local_program_dir
+        self.local_program_tar = os.path.join(WORK_DIR,'{}.tar.gz'.format(self.program_dir_name))
+        self.remote_program_tar = self.local_program_tar
+
         self.tmp_ssh_dir = '/tmp'
         self.real_ssh_dir = '/root/.ssh' if self.trust_user == 'root' else '/home/{}/.ssh'.format(self.trust_user)
         self.real_authorized_keys = '{}/authorized_keys'.format(self.real_ssh_dir)
@@ -154,7 +160,13 @@ class Trust:
         '''
         def copy_from_local(host):
             ssh_client = SSHClient(**self.ssh_params[host])
-            ssh_client.copy_from_local(self.local_program_dir,self.remote_program_dir)
+            ssh_client.copy_from_local(self.local_program_tar,self.remote_program_tar)
+
+            cmd = 'cd {} && tar zxf {}'.format(WORK_DIR,self.remote_program_dir)
+            res = ssh_client.run_cmd(cmd)
+            if res['ret'] != 0:
+                print('copy program failed.')
+                exit(1)
 
         sa_threading(copy_from_local,self.ips)
 
