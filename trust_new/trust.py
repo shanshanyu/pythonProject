@@ -210,7 +210,7 @@ class Trust:
     def self_trust(self):
         def trust(host):  #在 host 上执行自身免密并复制 authorized_keys 到 /tmp
             ssh_client = SSHClient(**self.ssh_params[host])
-            trust_cmd = '/bin/bash {}/script/self_trust.sh'.format(os.path.join(self.tmp_ssh_dir,self.program_dir_name))
+            trust_cmd = "su - {} -c '/bin/bash {}/script/self_trust.sh'".format(self.trust_user,os.path.join(self.tmp_ssh_dir,self.program_dir_name))
             res = ssh_client.run_cmd(trust_cmd)
             if res['ret'] != 0:
                 raise Exception(res)
