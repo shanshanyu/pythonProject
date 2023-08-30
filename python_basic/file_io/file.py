@@ -25,3 +25,11 @@ print(type(f.readlines()))
 f.close()
 print(f.encoding)
 print(f.closed)
+
+with open("/usr/local/python_file/test.log","r") as f:
+    data = f.read()
+    print(type(data),data)
+
+
+s = '25899b094e73155a'
+

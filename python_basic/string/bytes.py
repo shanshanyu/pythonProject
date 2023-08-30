@@ -21,3 +21,4 @@ print(b3[1:3])
 
 print(type(b5.decode()))
 
+

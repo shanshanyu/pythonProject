@@ -25,17 +25,29 @@ def analysis_datasource(d_table,d_type):
     # 获取 job_id
     sql = "select id from sdg_ingestion_job where name like '%{}%' and type='{}' and delete_flag=0".format(d_table,d_type)
     cursor.execute(sql)
-    job_id = cursor.fetchone()[0]
+    data = cursor.fetchone()
+    if data:
+        job_id = data[0]
+    else:
+        print('{} 没有错误信息.'.format(d_table))
+        exit(0)
+
 
     # 获取错误信息
-    sql = "select execution_result from sdg_ingestion_job_handle where job_id=19 and status='failure' order by start_time desc limit 1;"
+    sql = "select execution_result from sdg_ingestion_job_handle where job_id={} and status='failure' order by start_time desc limit 1;".format(job_id)
     cursor.execute(sql)
-    failed_reason = cursor.fetchone()[0]
+    data = cursor.fetchone()
+    if data:
+        failed_reason = data[0]
+    else:
+        print('{} 没有错误信息.'.format(d_table))
+        exit(0)
+
     # 打印粗略的失败原因
     print('{} 错误信息: {}'.format(d_table,failed_reason))
 
     # 获取job_handle_id
-    sql = "select id from sdg_ingestion_job_handle where job_id=19 and status='failure' order by start_time desc limit 1;"
+    sql = "select id from sdg_ingestion_job_handle where job_id={} and status='failure' order by start_time desc limit 1;".format(job_id)
     cursor.execute(sql)
     job_handle_id = cursor.fetchone()[0]
 
