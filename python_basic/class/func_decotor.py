@@ -14,6 +14,7 @@ class Student(object):
 
     @property   #函数装饰器，装饰 name
     def name(self):
+        print('get 方法执行了')
         return self.__name
 
     @name.setter

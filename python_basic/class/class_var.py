@@ -6,13 +6,13 @@ version: 1.0
 
 class Parent(object):
     a = 3
-    _b = 4
+    __b = 4
     pass
 
 a = Parent()
-Parent.b = 4
-print(a.a)
+Parent.b = 4  #添加类变量
+print(a.a)  #用对象的方式访问类变量   3
 
 b = Parent()
-print(b.b)
-print(b._b)
+print(b.b)  #b是类变量  4
+print(b._Parent__b)  #用对象访问类变量  4

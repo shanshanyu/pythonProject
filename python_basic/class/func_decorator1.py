@@ -17,4 +17,4 @@ def funB():
     print('B')
 
 
-print(funB,type(funB))  #funB被替换成了 fkit 字符串
+#print(funB,type(funB))  #funB被替换成了 fkit 字符串
