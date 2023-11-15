@@ -16,5 +16,11 @@ print('%d // %d = %d' % (a,b,a//b))
 print('%d ** %d = %d' % (a,b,a**b))
 
 
+d = 3+4,3-4
+print(d)
+
+
+
+
 
 
