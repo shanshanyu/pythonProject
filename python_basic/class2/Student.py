@@ -34,8 +34,8 @@ if __name__ == '__main__':
     print(s.name)  #通过对象调用实例属性
     print(Student.name)   #通过类访问类变量
 
-    Student.play()   #通过类访问静态方法
+    Student.play()   #通过类访问类方法
 
-    Student.eat()
+    Student.eat()  #通过类访问静态方法
 
     s.eat()
