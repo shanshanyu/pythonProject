@@ -88,7 +88,8 @@ class Menu(object):
         fore = str(styles["font_color"].get(font_color, ""))
         back = styles["background"].get(background, "")
         _end = styles["default"].get("end", 0)
-        _style = ";".join([s for s in [mode, fore, back] if s])
+        # \033[参数1;参数2;参数3m   参数1样式，参数2字体颜色，参数3 背景色
+        _style = ";".join([str(s) for s in [mode, fore, back] if s])
         style = f"\033[{_style}m"
         end = f"\033[{_end}m"
         return f"{style}{string}{end}"
@@ -346,7 +347,6 @@ class Menu(object):
 
             elif key in ["\x1b[B", "j", "J"]:
                 pos += 1
-
             elif key in ["\x1b[D", "h", "H"]:  # 上一页
                 if start - page_size >= 0:
                     pos = 0
