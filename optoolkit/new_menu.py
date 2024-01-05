@@ -22,7 +22,7 @@ class Menu(object):
         self.id_show = True  # 是否显示列表id
         self.title_show = True  # 标题是否显示
         self.foot_show = True  # 页脚是否显示
-        self.page_size = 10  # 每页显示多少条
+        self.page_size = 20  # 每页显示多少条
         self.title_delimiter = " > "  # 定义标题分隔符
         self.pointer = "➔ "  # 定义选择指示器
         self.background = ""  # 背景颜色
@@ -246,7 +246,7 @@ class Menu(object):
                 foot,
                 font_color=self.foot_color,
                 background=self.background
-            )
+            )+'\n\r'
             sys.stdout.write(result)
             sys.stdout.flush()
 
