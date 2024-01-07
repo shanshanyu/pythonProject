@@ -1,13 +1,12 @@
 '''
-create_time: 2024/1/3 17:02
+create_time: 2024/1/7 09:15
 author: yss
 version: 1.0
-自动动手写个 menu，包括 title  help body  foot
+如何绘图
 
-re.groups 如果 re 匹配对象为 None，那么调用 groups 方法会抛出异常 AttributeError
+重写绘图函数和 搜索框函数
 '''
 import re
-import signal
 import sys
 import termios
 import time
@@ -290,99 +289,113 @@ class Menu(object):
             termios.tcsetattr(_input, termios.TCSADRAIN, old_settings)
         return choice
 
-    def search_box(self,choose,title):
+    def search_box(self,choose_list,title):
         '''
-        展示搜索框，原理清空屏幕后重新打印数据
-        :param choose:
+        如何实现搜索框？
+        打印一个提示，输入key，然后找出包含 key 的 item 放入 choose_list 中
+        :param choose_list: 原来的 choose_list
         :param title:
         :return:
         '''
+        #清屏
         self.clear_screen()
-        search_title = title + ["Search"] if title else ["Search"]
-        self.title_box(search_title)
-        result = "\r\n" + self.offset + "key: "
+
+        # 默认的title内容，如果title有值的话，再拼接
+        title_base = '\n' + self.offset + (len(self.pointer) + 1) * ' ' + 'key: '
+
+        if title and isinstance(title, list) :
+            title_info = title_base + self.title_delimiter + self.title_delimiter.join(title)
+        else :
+            title_info = title_base  # 如果 title 不是列表，或者不存在，不用打印 title 的内容
+        result = self.color_style(
+            title_info,
+            mode='bold',
+            font_color=self.title_color,
+            background=self.background
+        )
         sys.stdout.write(result)
         sys.stdout.flush()
-        keyword = sys.stdin.readline().strip()
-        # filter 函数返回的是一个filter 对象，可以用list 转换成列表
-        filter_choose = list(filter(lambda x: keyword in str(x[1]), choose))
-        return filter_choose
+
+        key = sys.stdin.readline().strip()  #读取到的结果包含换行，也就是 '\n',需要去除掉
+        choose_list = list(filter(lambda x:key in str(x),choose_list))
+        return choose_list
+
+
+
 
     def draw(self,choose,title=None,guide=None):
         '''
-        处理数据，然后传递给 menu_box
-        :param choose: 是一个列表，转换成一个索引序列
-        :param title:
-        :param guide:
+        绘图操作，怎么实现绘图？
+        1. 从 choose 中选取一页大小的数据传递给 menu_box 进行绘图，如果不够一页都传递过去
+        2. 获取用户的终端输入，用raw模式
+        3. 再到 1 进行绘图
+        :param choose: 传递过来的数据，应该是一个 list，如果不是 list 怎么办？
+        :param title: 标题内容
+        :param guide: 操作指导
         :return:
         '''
+        #如果 choose 不是列表，程序退出
+        if not isinstance(choose,list):
+            print('参数错误，程序退出！')
+            sys.exit(1)
 
-        #pos 初始位置是 0，start 初始位置也是 0，page表示页数，初始是 1
         pos,start,page = 0,0,1
+        # 一页的大小
         page_size = self.page_size
 
-        #如果 title 存在，但是不是列表，可以给转换成列表
-        if title and isinstance(title,list) is False:
-            title = [str(title)]
-        if guide and isinstance(guide,list) is False:
-            guide = [str(guide)]
-
-        data = [[i, v] for i, v in enumerate(choose)]
-        choose_list = data
-
-        #signal 这个函数没有用，在 raw 模式下，contrl+c 识别不了,不会把他当成特殊按键，发送 sigint 信号
-        #signal.signal(signal.SIGINT,xx)
+        # 把列表转换成 [[0,x],[1,x]..] 这种形式
+        choose_list = [[i, v] for i, v in enumerate(choose)]
 
         while True:
             total = len(choose_list)
-            #获取 body_box 需要打印的内容，如果 start 所在的页
-            if start + page_size < total:
-                page_list = choose_list[start:start+page_size]
+            # 判断是否还有下一页 start是索引，page_size是长度，start+page_size表示下一页的第一个元素，下一行的第一个元素的索引也是total
+            # 列表取值是 start,page_size-1  所以这个比较也就变成了 start+page_size-1 <= total-1
+            if start + page_size <= total:
+                page_list = choose_list[start:start + page_size]
             else:
                 page_list = choose_list[start:total]
 
-            #指针到达边界
+            # 如果达到边界怎么处理
             if pos < 0:
-                pos = len(page_list) - 1   #不应该用 start + page_size -1，这种在 page 满的情况下是没问题，没满就有问题
-            if pos >= len(page_list):
+                pos = len(page_list) - 1
+            elif pos >= len(page_list) :
                 pos = 0
-
-            #绘制菜单
             self.menu_box(choose_list,pos,page_list,page,start,title,guide)
 
-            #获取键盘输入
             key = self.get_ch()
-            #选中内容返回
-            if key == '\r':
-                #列表非空，防呆设计
-                if len(choose_list) != 0:
-                    #当前的 pos 位置
-                    index = page_size * (page - 1) + pos
-                    #获取选中的内容
-                    return choose_list[index][0],choose_list[index][1]
-            elif key in ["b", "B", "q", "Q"]:  # 返回
-                return -1, None
-            #下键，或者 k K
-            elif key in ["\x1b[A", "k", "K"]:
-                pos -= 1
-            #上键，或者 j J
-            elif key in ["\x1b[B", "j", "J"]:
-                pos += 1
-            elif key in ["\x1b[D", "h", "H"]:  # 上一页
-                if start - page_size >= 0:
-                    start -= page_size
-                    pos = 0
-                    page -= 1
-            elif key in ["\x1b[C", "l", "L"]:  # 下一页
-                if start + page_size < total:
-                    start += page_size
-                    pos = 0
-                    page += 1
-            elif key in ["S", "s"]:  # 搜索
-                choose_list = self.search_box(choose_list,title)
 
-            elif key in ["X", "x"]:  # 取消搜索
-                choose_list = data
+            if key == '\r':  #回车
+                ids = start + pos
+                return choose_list[ids][0],choose_list[ids][1]
+            elif key in ['q','Q']: #退出
+                return -1,None
+            elif key in ['\x1b[C']: #下一页  本页最后一个元素的索引和 total-1 比较
+                if start + page_size < total:
+                    pos = 0
+                    start += page_size
+            elif key in ['\x1b[D']: #上一页
+                if start - page_size >= 0:
+                    pos = 0
+                    start -= page_size
+            elif key in ['\x1b[A']: #向上
+                pos -= 1
+            elif key in ['\x1b[B']: #向下
+                pos += 1
+            elif key in ['s','S']: #搜索框
+                choose_list = self.search_box(choose_list,title)
+            elif key in ['x','X']: #取消搜索框
+                choose_list = [[i, v] for i, v in enumerate(choose)]
+
+
+
+
+
+
+
+
+
+
+
 
 
 if __name__ == '__main__':
