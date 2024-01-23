@@ -6,6 +6,8 @@ python的封装，这种方式访问带 __ 的属性或方法是有问题的
 '''
 
 class Test(object):
+
+    __name = 'zhangsan'
     def __init__(self,foo):
         self.__foo = foo
 
@@ -15,5 +17,7 @@ class Test(object):
 
 if __name__ == '__main__':
     test = Test('11')
-    print(test.__foo)   #访问实例变量   实例变量的封装
-    test.__bar()    #访问实例方法
+    # print(test.__foo)   #访问实例变量   实例变量的封装
+    test._Test__bar()    #访问实例方法
+
+    print(Test._Test__name)
