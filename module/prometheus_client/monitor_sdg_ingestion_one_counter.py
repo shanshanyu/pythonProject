@@ -1,7 +1,9 @@
 '''
-create_time: 2024/1/23 11:25
+create_time: 2024/1/24 12:36
 author: yss
 version: 1.0
+desc: sdg_ingestion_job_failed_times_total  指标名称，每个任务作为一个 label 的值
+上个版本不能及时更新数据表,在循环中加了一行，每次循环更新 任务表
 '''
 
 import time
@@ -11,28 +13,28 @@ from hyperion_client.hyperion_inner_client.inner_config_manager import InnerConf
 
 
 class MonitorSDGJob:
-    # pushgateway_address = 'http://meta01.classic-ali-beijing-01.qimaoxiaoshuo.deploy.sensorsdata.cloud:8315'
-    pushgateway_address = '10.130.13.32:8315'
+    pushgateway_address = 'meta01.classic-ali-beijing-01.qimaoxiaoshuo.deploy.sensorsdata.cloud:8315'
+    #pushgateway_address = '10.130.13.32:8315'
+    # pushgateway_address = '10.20.20.218:8315'
+
     def __init__(self):
         #获取project id，每个project 一个 registry
         self.project_list = self.get_project_list()
 
-        #获取 registry 列表
-        self.registry = self.get_registry_list(self.project_list)
+        #获取 registry
+        self.registry = CollectorRegistry()
 
-        #获取job 列表 {project_id:[],..}
+        #获取 counter
+        self.counter = Counter('sdg_ingestion_job_failed_times_total', 'Total failures of your job',
+                               ['project_id', 'job_name','instance'], registry=self.registry)
+
+        #获取job 列表 {project_id:[job_name,job_name,...],..}
         self.job_dic = self.get_job_name(self.project_list)
 
-        #获取 counter 列表 {project_id:{job:counter,...}...}
-        self.counter_dic = self.get_counter_name(self.job_dic)
-
-    def get_registry_list(self,project_list):
-        result = {}
-        for project_id in project_list:
-            result[project_id] = CollectorRegistry()
-        return result
+        self.log_file = open('sdg_ingestion_job_monitor.log','a')
 
     def get_project_list(self):
+        '''获取项目 id 列表'''
         # 获取连接信息
         mysql_host = InnerConfigManager.get_instance().get_mysql_master()
         mysql_pass = InnerConfigManager.get_instance().get_client_conf('sp', 'mysql')['password']
@@ -85,26 +87,11 @@ class MonitorSDGJob:
         db.close()
         return result
 
-    def get_counter_name(self,job_dic):
-        result = {}
-        for project_id,job_list in job_dic.items():
-            if not job_list:
-                continue
-            tmp = {}
-            for job in job_list:
-                # 创建一个Counter指标
-                job_failures = Counter(job, 'Total failures of your job',['instance','product_line',],registry=self.registry[project_id])
-                tmp[job] = job_failures
-            result[project_id] = tmp
-        return result
-
-    def running(self,counter_dic):
-        # print(self.project_list)
-        # print(self.registry)
-        # print(self.job_dic)
-        # print(self.counter_dic)
-
+    def push_metric(self):
         while True:
+            #更新job 列表
+            self.job_dic = self.get_job_name(self.project_list)
+
             # 获取连接信息
             mysql_host = InnerConfigManager.get_instance().get_mysql_master()
             mysql_pass = InnerConfigManager.get_instance().get_client_conf('sp', 'mysql')['password']
@@ -115,30 +102,36 @@ class MonitorSDGJob:
             # 获取游标对象
             cursor = db.cursor()
 
-            for project_id,counter_lst in counter_dic.items():
-                if not counter_lst:
+            for project_id, job_lst in self.job_dic.items() :
+                if not job_lst:
                     continue
 
-                for job_name,counter in counter_lst.items():
-                    sql = "select job_status from sdg_ingestion_table where project_id={} and name='{}'".format(project_id,job_name)
+                for job_name in job_lst:
+                    sql = "select job_status from sdg_ingestion_table where project_id={} and name='{}'".format(project_id,
+                                                                                                                job_name)
                     cursor.execute(sql)
                     data = cursor.fetchone()
-                    #如果 job 的状态是 failure，对应的 counter inc
+                    # 如果 job 的状态是 failure，对应的 counter inc
                     if data[0] and data[0] == 'failure':
-                        counter.labels(instance='sensors-training:sdg_ingestion_job:hybrid03',product_line='sdg').inc()
+                        self.counter.labels(project_id=project_id, job_name=job_name, instance='meta03').inc()
 
-            for project_id,job_lst in self.job_dic.items():
-                if job_lst:
-                    registry = self.registry[project_id]
-                    push_to_gateway('10.130.13.32:8315', job='sdg_ingestion_job', registry=registry)
+            push_to_gateway(MonitorSDGJob.pushgateway_address, job='sensors-inf-component-pushgateway',
+                            registry=self.registry)
             db.close()
-            print('run once')
-            time.sleep(600)
+            #写日志
+            with open('sdg_ingestion_job_monitor.log', 'a') as log_file:
+                print(time.strftime('%Y%m%d-%H:%M:%S', time.localtime()), 'running', file=log_file)
+                log_file.flush()
 
+            #每上报一次指标 sleep 60s
+            time.sleep(60)
 
 
 if __name__ == '__main__':
     job = MonitorSDGJob()
-    job.running(job.counter_dic)
+    job.push_metric()
+
+
+
 
 

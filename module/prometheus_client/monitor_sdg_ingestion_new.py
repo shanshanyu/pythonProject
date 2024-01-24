@@ -1,5 +1,5 @@
 '''
-create_time: 2024/1/23 11:25
+create_time: 2024/1/24 10:41
 author: yss
 version: 1.0
 '''
@@ -99,11 +99,6 @@ class MonitorSDGJob:
         return result
 
     def running(self,counter_dic):
-        # print(self.project_list)
-        # print(self.registry)
-        # print(self.job_dic)
-        # print(self.counter_dic)
-
         while True:
             # 获取连接信息
             mysql_host = InnerConfigManager.get_instance().get_mysql_master()
@@ -130,11 +125,10 @@ class MonitorSDGJob:
             for project_id,job_lst in self.job_dic.items():
                 if job_lst:
                     registry = self.registry[project_id]
-                    push_to_gateway('10.130.13.32:8315', job='sdg_ingestion_job', registry=registry)
+                    push_to_gateway(MonitorSDGJob.pushgateway_address, job='sensors-inf-component-pushgateway', registry=registry)
             db.close()
             print('run once')
-            time.sleep(600)
-
+            time.sleep(60)
 
 
 if __name__ == '__main__':
