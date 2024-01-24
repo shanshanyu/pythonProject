@@ -58,7 +58,6 @@ class MonitorSDGJob:
         return result
 
     def get_job_name(self,project_list):
-        '''获取每个项目的指标名称'''
         # 获取连接信息
         mysql_host = InnerConfigManager.get_instance().get_mysql_master()
         mysql_pass = InnerConfigManager.get_instance().get_client_conf('sp', 'mysql')['password']
@@ -132,7 +131,7 @@ class MonitorSDGJob:
                     registry = self.registry[project_id]
                     push_to_gateway('10.130.13.32:8315', job='sdg_ingestion_job', registry=registry)
             db.close()
-            print('run once')
+            print('running')
             time.sleep(600)
 
 

@@ -8,4 +8,4 @@ from prometheus_client import CollectorRegistry, Counter, push_to_gateway
 registry = CollectorRegistry()
 c = Counter('my_requests_total', 'HTTP requests total',  registry=registry)
 c.inc()
-push_to_gateway('10.130.13.32:8315', job='batchA', registry=registry)
+push_to_gateway('10.130.13.32:8315', job='batchB', registry=registry)
