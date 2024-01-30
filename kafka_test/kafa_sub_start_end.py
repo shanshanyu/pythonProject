@@ -2,6 +2,9 @@
 create_time: 2023/7/27 14:14
 author: yss
 version: 1.0
+
+正式脚本
+
 '''
 
 from kafka import TopicPartition,KafkaConsumer

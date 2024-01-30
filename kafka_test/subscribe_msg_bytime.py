@@ -2,6 +2,8 @@
 create_time: 2023/6/28 18:03
 author: yss
 version: 1.0
+
+测试脚本，用了message 列表，不能实时打印消息
 '''
 
 #订阅某个 topic  某个时间点的数据，时间点是小时

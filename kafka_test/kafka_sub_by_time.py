@@ -3,6 +3,8 @@ create_time: 2023/7/5 11:19
 author: yss
 version: 1.3
 通过小时订阅
+
+测试脚本，这个脚本里面用了 message
 '''
 
 from kafka import TopicPartition,KafkaConsumer

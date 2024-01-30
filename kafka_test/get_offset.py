@@ -2,6 +2,8 @@
 create_time: 2023/11/21 17:54
 author: yss
 version: 1.0
+
+测试脚本
 '''
 
 from kafka import TopicPartition,KafkaConsumer

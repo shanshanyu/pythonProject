@@ -2,6 +2,8 @@
 create_time: 2023/6/28 15:35
 author: yss
 version: 1.0
+
+测试脚本
 '''
 from kafka import KafkaConsumer
 
