@@ -76,7 +76,6 @@ if __name__ == '__main__':
     time_start = datetime.strptime(args.start_hour, '%Y%m%d%H')  # 获得 datetime 对象,start_time
     time_end = datetime.strptime(args.end_hour, '%Y%m%d%H')  # 获得 datetime 对象,start_time
     #time_end = time_start + timedelta(hours=1)  # end_time
-    print(time_start,time_end)
 
     subscribe_topic(args.topic_name,args.bootstrap_servers,time_start.timestamp()*1000,time_end.timestamp()*1000)
 
