@@ -1,0 +1,6 @@
+---
+- name: first playbook
+  hosts: all
+  tasks:
+    - name: 安装net-tools
+      yum: name=net-tools state=installed

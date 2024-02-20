@@ -1,0 +1,7 @@
+companies:
+  -
+    id: 1
+    name: company1
+  -
+    id: 2
+    name: company2
