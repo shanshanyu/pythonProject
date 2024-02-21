@@ -1,0 +1,53 @@
+- name: close_firewalld
+  shell: systemctl stop firewalld.service > /dev/null && systemctl disable firewalld.service > /dev/null
+
+- name: close_selinux
+  shell: setenforce 0 && sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config && sed -i 's/SELINUX=permissive/SELINUX=disabled/g' /etc/selinux/config
+
+- name: backup yum repo
+  shell: cd /etc/yum.repos.d && mkdir repo && mv *.repo repo
+  tags:
+   - backuprepo
+
+- name: configuration yum repo
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+  - { src: CentOS-Base.repo,dest: '/etc/yum.repos.d' }
+  - { src: epel-7.repo,dest: '/etc/yum.repos.d' }
+  tags:
+   - configrepo
+
+- name: cache yum
+  shell: yum makecache
+
+- name: install basic software
+  yum:
+    name: ['vim', 'wget', 'curl', 'bash-completion', 'lrzsz', 'net-tools', 'expect', 'iotop', 'unzip', 'bzip2', 'telnet', 'dos2unix', 'dstat', 'bzip2-devel', 'curl-devel', 'gcc', 'gcc-c++', 'make', 'cmake', 'autoconf', 'openssl-devel', 'openssl-perl','tree']
+    state: present
+
+- name: Adjust handle
+  copy: src=limits.conf dest=/etc/security/
+
+- name: resource limit
+  shell: sed -i 's/*    soft    nproc    4096/*    soft    nproc     unlimited/g' /etc/security/limits.d/20-nproc.conf
+
+- name: Kernel optimization
+  copy: src=sysctl.conf dest=/etc/
+
+- name: his command
+  shell: echo 'UserIP=$(who -u am i | cut -d"("  -f 2 | sed -e "s/[()]//g")' >> /etc/profile && echo 'export HISTTIMEFORMAT="[%F %T] [$(whoami)] [${UserIP}]" '>> /etc/profile && source /etc/profile
+
+- name: Configuration takes effect
+  shell: source /etc/profile && source /usr/share/bash-completion/bash_completion && sysctl -p
+
+- name: install jdk evn
+  unarchive: src=jdk-8u112-linux-x64.tar.gz dest=/usr/local
+  tags: unpress
+
+- name: install js env
+  unarchive: src=node-v12.16.1-linux-x64.tar.xz dest=/usr/local
+
+- name: config profile
+  shell: source /etc/profile && echo 'export JAVA_HOME=/usr/local/jdk1.8.0_112' >> /etc/profile && echo 'export PATH=$JAVA_HOME/bin/:$PATH' >> /etc/profile && echo 'export CLASSPATH=.:$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib/dt.jar:$CLASSPAT' >> /etc/profile && mv /usr/local/node-v12.16.1-linux-x64 /usr/local/node-v12.16.1 && echo 'export NODE_HOME=/usr/local/node-v12.16.1' >>/etc/profile && echo 'export PATH=$NODE_HOME/bin/:$PATH' >>/etc/profile

@@ -1,0 +1,11 @@
+- hosts: all
+  vars_prompt:
+    - name: "one"
+      prompt: "please input one value"
+      private: no
+    - name: "two"
+      prompt: "please input one value"
+      private: yes
+  tasks:
+   - name: display var
+     debug: msg="one is {{one}},two is {{two}}"

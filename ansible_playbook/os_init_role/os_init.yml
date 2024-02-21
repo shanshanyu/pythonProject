@@ -1,0 +1,7 @@
+---
+#role的入口文件
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  roles:
+    - os_init

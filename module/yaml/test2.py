@@ -6,6 +6,6 @@ version: 1.0
 
 import yaml
 
-with open('test2.yaml','r') as f:
+with open('test2.yaml','r',encoding='utf-8') as f:
     data = yaml.load(f.read(),Loader=yaml.FullLoader)
     print(data,type(data))

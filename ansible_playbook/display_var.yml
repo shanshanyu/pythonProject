@@ -1,0 +1,5 @@
+---
+- hosts: all
+  tasks:
+    - name: display var
+      debug: msg="the {{inventory_hostname}} value is {{key}}"
