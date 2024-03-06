@@ -140,7 +140,7 @@ class Trust:
             print('ip 和 密码长度不相等')
             sys.exit(1)
 
-        conf['ssh_params'] = {}
+        conf['ssh_params'] = {}  #把列表值转换成字典，方便后续使用
         for i in conf['ips']:
             conf['ssh_params'][i] = {'hostname':i,'port':conf['ssh_port'],'username':conf['user'],'password':conf['password'][conf['ips'].index(i)]}
 

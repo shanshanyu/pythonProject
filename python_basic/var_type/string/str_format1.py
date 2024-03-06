@@ -13,3 +13,4 @@ c = 'c'
 print('%s %f' % (a,3))
 print('{}'.format(b))
 print(f'{c}')
+

@@ -14,3 +14,6 @@ print('a','b','c')  #默认分隔符是 空格   结尾是 \n
 
 print(1==True)   #python3 中的 布尔值是 True False
 
+c = r'abc "\"'
+print(c)
+
