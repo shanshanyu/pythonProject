@@ -23,5 +23,8 @@ a.remove(1)
 # b.remove(6)  #元素不存在会抛出 KeyError 异常
 a.discard(8)  #discard 删除元素，元素不存在不会报错
 
+print(a)
+a.pop()
+print(a)
 
 

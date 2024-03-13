@@ -14,5 +14,6 @@ class Test(object):
 
 if __name__ == '__main__':
     test = Test('11')
+    # test.__bar()
     print(test._Test__foo)  # 访问实例变量   实例变量的封装
     test._Test__bar()  # 访问实例方法

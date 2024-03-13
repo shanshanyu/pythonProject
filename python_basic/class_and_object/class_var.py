@@ -16,3 +16,6 @@ print(a.a)  #用对象的方式访问类变量   3
 b = Parent()
 print(b.b)  #b是类变量  4
 print(b._Parent__b)  #用对象访问类变量  4
+
+b.b = 8 #用实例对象给类变量赋值，实际是新创建了一个实例变量
+print(b.b,Parent.b)

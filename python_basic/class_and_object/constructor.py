@@ -20,6 +20,7 @@ class Student(Person):
         super().__init__()
         self.name = name
 
+
 if __name__ == '__main__':
     s = Student()
     s.play()

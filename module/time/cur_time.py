@@ -1,8 +1,12 @@
 # 2023/5/24 22:09
 import time
-cur_time = time.localtime(time.time())
+local_time = time.localtime()
+print(local_time)
+gm_time = time.gmtime()
+print(gm_time)
 
-str_cur_time = time.strftime('%Y%m%d-%H%M%S',cur_time)
+
+str_cur_time = time.strftime('%Y%m%d-%H%M%S',local_time)
 
 print(str_cur_time,type(str_cur_time))
 
