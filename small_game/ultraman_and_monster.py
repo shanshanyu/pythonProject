@@ -2,6 +2,8 @@
 create_time: 2023/11/7 16:50
 author: yss
 version: 1.0
+
+
 '''
 import random
 from abc import ABCMeta,abstractmethod
