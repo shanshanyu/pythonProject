@@ -69,7 +69,7 @@ class Ultraman(Fighter):
 
     def attack(self,other):
         #普通攻击
-        other.hp -= random.randint(15,25)
+        other.hp -= random.randint(15,25) #奥特曼每次攻击 15~25 滴血
 
 
     def huge_attack(self,other):
@@ -111,7 +111,7 @@ class Ultraman(Fighter):
         恢复魔法值
         :return:
         '''
-        incr_point = random.randint(1,10)
+        incr_point = random.randint(1,10)   #魔法值每次恢复 1~10 点
         self.mp += incr_point
         return incr_point
 
@@ -124,7 +124,7 @@ class Monster(Fighter):
         super().__init__(name,hp)
 
     def attack(self,other):
-        other.hp -= random.randint(10,20)
+        other.hp -= random.randint(10,20)  #怪兽每次攻击10~20滴血
 
     def __str__(self):
         return f'小怪兽:{self.name},血量：{self.hp}'
