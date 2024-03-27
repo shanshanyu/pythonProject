@@ -16,6 +16,7 @@ class Student(object):
 
     @name1.setter
     def name1(self,name):   #把 name1 方法设置成 name1 属性的 set 方法
+        print('set方法执行了')
         self.__name = name
 
 if __name__ == '__main__':
