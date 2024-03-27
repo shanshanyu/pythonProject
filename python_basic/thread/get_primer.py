@@ -8,7 +8,11 @@ def get_prime(start,end):
     for i in range(start,end+1):
 
         flag = True
-        for j in range(2,int(i/2)):      #for(i = 2; i < j/2;i++)
+        for j in range(2,int(i/2)+1):      #for(i = 2; i < j/2;i++)
+            '''这个质数的判断逻辑有问题，4 判断错误，应该改成 
+            for j in range(2,int(i/2)+1)  原：for j in range(2,int(i/2))
+            这个质数的判断逻辑还有其他问题，小于 3 的数会判断错误
+            '''
             if i % j == 0:
                 flag = False
                 break
@@ -18,4 +22,4 @@ def get_prime(start,end):
 
 
 if __name__ == '__main__':
-    get_prime(30000000,30000200)
+    get_prime(1,6)

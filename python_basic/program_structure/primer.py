@@ -16,13 +16,13 @@ num = int(input('input a number: '))
 
 assert num > 1  #如果这个数小于0断言报错
 
-if num == 2:
+if num == 2 or num == 3:
     print('{} is primer'.format(num))
     sys.exit(0)
 
 
 flag = False
-for i in range(2,int(num/2-1)):
+for i in range(2,int(num/2)+1):
     if num % i == 0:
         flag = True
         break
