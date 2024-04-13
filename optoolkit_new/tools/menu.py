@@ -9,6 +9,7 @@ class Menu(object):
     def title_box(self,title):
         if self.title_box_show:
             title_base = "Main Menu" + self.title_delimiter.join(title) if title else "Main Menu"
+            print(title_base)
 
     def menu_box(self,steps,title,guide):
         self.title_box(title)
