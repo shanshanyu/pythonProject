@@ -17,6 +17,7 @@ jobs:
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SERVER_HOST }}
+          port: ${{ secrets.SERVER_PORT }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASS }}
           source: "optoolkit_new/"
