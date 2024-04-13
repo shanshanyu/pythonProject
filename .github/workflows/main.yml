@@ -11,12 +11,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:  
-    - uses: actions/checkout@v3 #拉取你的最新代码
-    - name: Use Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: "14.x"  # 指定你的node版本
-    - run: npm install
     - name: TranslateFile
       uses: wangyucode/sftp-upload-action@v1.1
       with:
