@@ -23,7 +23,7 @@ def main():
         "test1",
         "test2"
     ]
-    m.draw(steps,title='optoolkit',guide="【Select】↑ ↓ 【choose】Enter 【Search】s/S 【Quit】q/Q/b/B\
+    m.draw(steps,title=['optoolkit','abc'],guide="【Select】↑ ↓ 【choose】Enter 【Search】s/S 【Quit】q/Q/b/B\
 【Page】g/l")
 
 
