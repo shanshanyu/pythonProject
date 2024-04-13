@@ -1,23 +1,23 @@
-# 这里声明git actions的名字
-name: publish code
+name: Deploy
 
-# 指定监听事件，这里监听push到git分支main的事件
 on:
   push:
-    branches: [ "master" ]
+    branches:
+      - master
 
-# 这里定义工作流，工作流配置对应job任务
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    steps:  
-    - name: TranslateFile
-      with:
-        host: ${{ secrets.SERVER_IP }} #你的nginx服务器公网ip
-        port: ${{ secrets.SERVER_PORT }} #你的nginx服务器ssh端口
-        username: ${{ secrets.USERNAME }} #你的nginx服务器用户名
-        password: ${{ secrets.PASSWORD }} #你的nginx服务器密码
-        localDir: "optoolkit_new" #你vue项目build好的文件的路径,每次服务器上会自动删除对应的文件夹后重新覆盖
-        remoteDir: ${{ secrets.SERVER_DESTINATION }} #你要把你build好的文件夹放到nginx服务器上的什么位置，一般都是nginx配置的站点路
-        script:
-          scp -p $port $localDir $username@host
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Sync files to server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASS }}
+          source: "optoolkit_new/"
+          target: "/tmp"
