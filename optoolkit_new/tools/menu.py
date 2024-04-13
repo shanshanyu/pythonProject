@@ -14,4 +14,4 @@ class Menu(object):
         self.title_box(title)
 
     def draw(self,steps,title=None,guide=None):
-        self.menu_box()
+        self.menu_box(steps,title,guide)
