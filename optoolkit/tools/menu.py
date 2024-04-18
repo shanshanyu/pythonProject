@@ -18,8 +18,8 @@ class Menu(object):
         self.title_show = True  # 标题是否显示
         self.foot_show = True  # 页脚是否显示
         self.page_size = 10  # 每页显示多少条
-        self.title_delimiter = " > "  # 定义标题分隔符
-        self.pointer = "➔ "  # 定义选择指示器
+        self.title_delimiter = ">"  # 定义标题分隔符
+        self.pointer = "➔"  # 定义选择指示器
         self.background = ""   # 背景颜色
         self.title_color = "purple"
         self.help_color = "blue"
@@ -156,8 +156,7 @@ class Menu(object):
         title block
         """
         if self.title_show:
-            title_base = "\n" + self.offset + \
-                (len(self.pointer) + 1) * " " + "Main Menu"
+            title_base = "\n" + self.offset + (len(self.pointer) + 1) * " " + "Main Menu"
             if title and isinstance(title, list):
                 title_info = (
                     title_base + self.title_delimiter +
@@ -378,7 +377,19 @@ if __name__ == '__main__':
         "Change IP",
         "Fix docker0",
         "test1",
-        "test2"
+        "test2",
+        "Process Notify",
+        "Start Sensors Product",
+        "Stop Sensors Product",
+        "Auto Event Delete",
+        "Migration Evaluation",
+        "Zookeeper_maxClientCnxns Change",
+        "Change IP",
+        "Fix docker0",
+        "Migration Evaluation",
+        "Zookeeper_maxClientCnxns Change",
+        "Change IP",
+        "Fix docker0"
     ]
     m = Menu()
     pos = m.draw(steps, title="optoolkit",
