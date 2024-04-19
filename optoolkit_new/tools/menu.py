@@ -29,7 +29,8 @@ class Menu(object):
         self.foot_color = 'yellow'
         self.background_color = ''
 
-    def get_ch(self):
+    @staticmethod
+    def get_ch():
         '''
         使用cbreak模式，关闭回显
         :return:
@@ -47,7 +48,8 @@ class Menu(object):
         finally:
             termios.tcsetattr(stdin_fd, termios.TCSAFLUSH, old_termios)
 
-    def get_pos(self):
+    @staticmethod
+    def get_pos():
         '''
         获取光标位置
         :return:
@@ -75,17 +77,19 @@ class Menu(object):
         match = re.search(r'(\d+);(\d+)R$', res)
         return int(match.group(1))
 
-    def clear_screen(self):
+    @staticmethod
+    def clear_screen():
         '''
         清屏
         :return:
         '''
-        pos = self.get_pos()
+        pos = Menu.get_pos()
         for _ in range(pos):
             sys.stdout.write('\033[K\033[1A')
             sys.stdout.flush()
 
-    def color_style(self,content,foreground_color='',background_color='',font_style=''):
+    @staticmethod
+    def color_style(content,foreground_color='',background_color='',font_style=''):
         '''
         输入content，把content设置样式后返回
         :param content:
@@ -105,7 +109,7 @@ class Menu(object):
         if self.help_show:
             help_base = guide
             help_base = self.offset + len(self.pointer) * ' ' + help_base
-            res = self.color_style(help_base,self.help_color,self.background_color,'highlight') + '\n\n'
+            res = Menu.color_style(help_base,self.help_color,self.background_color,'highlight') + '\n\n'
             sys.stdout.write(res)
             sys.stdout.flush()
 
@@ -117,12 +121,12 @@ class Menu(object):
                 title_base = "Main Menu"
 
             title_base = '\n' + self.offset + (len(self.pointer)+1) * ' ' + title_base
-            res = self.color_style(title_base,self.title_color,self.background_color,'highlight') + '\n\n'
+            res = Menu.color_style(title_base,self.title_color,self.background_color,'highlight') + '\n\n'
             sys.stdout.write(res)
             sys.stdout.flush()
 
     def menu_box(self,choose,title,guide):
-        self.clear_screen()
+        Menu.clear_screen()
         self.title_box(title)
         self.help_box(guide)
 
@@ -152,10 +156,10 @@ class Menu(object):
             # 是否选中,选中会增加 pointer,增加颜色
             if self.pos == i:
                 line_content = self.pointer + line_content
-                line_content = self.color_style(line_content, self.body_on_switched_color, self.background_color, '')
+                line_content = Menu.color_style(line_content, self.body_on_switched_color, self.background_color, '')
             else:
                 line_content = len(self.pointer) * ' ' + line_content
-                line_content = self.color_style(line_content, self.body_color, self.background_color, '')
+                line_content = Menu.color_style(line_content, self.body_color, self.background_color, '')
 
             line_content = self.offset + line_content + '\n'
 
@@ -181,7 +185,7 @@ class Menu(object):
 
             foot_base = f'< {self.page_index} page / {total} tolal {prefix} {suffix}>'
             foot_base = '\n' + self.offset + len(self.pointer) * ' ' + foot_base + '\n'
-            res = self.color_style(foot_base,self.foot_color,self.background_color,'')
+            res = Menu.color_style(foot_base,self.foot_color,self.background_color,'')
             sys.stdout.write(res)
             sys.stdout.flush()
 
@@ -191,7 +195,7 @@ class Menu(object):
 
         while True:
             self.menu_box(choose, title, guide)
-            ch = self.get_ch()
+            ch = Menu.get_ch()
 
             end = self.page_size-1 if self.start + self.page_size < total else total - self.start - 1
 
@@ -236,6 +240,5 @@ if __name__ == '__main__':
         "Stop Sensors Product",
         "Auto Event Delete"
     ]
-    res = m.draw(steps, title='optoolkit_new', guide="【Select】↑ ↓ 【choose】Enter 【Search】s/S 【Quit】q/Q 【Page】g/l")
-    print(res)
+    m.draw(steps, title='optoolkit_new', guide="【Select】↑ ↓ 【choose】Enter 【Search】s/S 【Quit】q/Q 【Page】g/l")
 
