@@ -20,7 +20,7 @@ class Menu(object):
         self.start = 0  # 列表中的位置,第一页是0，第二页是page_size
         self.pos = 0  # 每页中的位置
         self.page_size = 10  # 页长
-        self.page_index = 1
+        self.page_index = 1  # 当前页
 
         self.title_color = 'purple'
         self.help_color = 'blue'
@@ -125,18 +125,19 @@ class Menu(object):
             sys.stdout.write(res)
             sys.stdout.flush()
 
-    def menu_box(self,choose,title,guide):
+    def menu_box(self,choose_list,page_list,title,guide):
+        '''
+        :param choose_list: 总数据
+        :param page_list: 页数据
+        :param title:
+        :param guide:
+        :return:
+        '''
         Menu.clear_screen()
         self.title_box(title)
         self.help_box(guide)
-
-        total = len(choose)
-        if self.start + self.page_size >= total:
-            choose_list = choose[self.start:]
-        else:
-            choose_list = choose[self.start:self.start+self.page_size+1]
-        self.body_box(choose_list)
-        self.foot_box(choose)
+        self.body_box(page_list)
+        self.foot_box(choose_list)
 
     def body_box(self,choose):
         res = ''  # 所有的打印内容
@@ -189,15 +190,21 @@ class Menu(object):
             sys.stdout.write(res)
             sys.stdout.flush()
 
-    def draw(self,choose_list,title=None,guide=None):
-        choose = list(enumerate(choose_list))
-        total = len(choose)
+    def draw(self,choose,title=None,guide=None):
+        choose_list = list(enumerate(choose))
+        total = len(choose_list)
 
         while True:
-            self.menu_box(choose, title, guide)
+            page_list = choose_list[self.start:self.start+self.page_size] if self.start+self.page_size < total \
+                else choose_list[self.start:total]
+
+            self.menu_box(choose_list, page_list,title, guide)
+
+            # 获取键盘输入
             ch = Menu.get_ch()
 
-            end = self.page_size-1 if self.start + self.page_size < total else total - self.start - 1
+            # end = self.page_size-1 if self.start + self.page_size < total else total - self.start - 1
+            # 上面的步骤就是计算页长
 
             if ch == '\r':
                 index = self.start + self.pos
@@ -206,19 +213,19 @@ class Menu(object):
                 break
             elif ch == '\x1b[B':  # 下
                 self.pos += 1
-                if self.pos > end:
+                if self.pos >= len(page_list):
                     self.pos = 0
             elif ch == '\x1b[A':  # 上
                 self.pos -= 1
                 if self.pos < 0:
-                    self.pos = end
+                    self.pos = len(page_list)-1
             elif ch == '\x1b[D':   # 左
                 if self.start - self.page_size >= 0:
                     self.page_index -= 1
                     self.start -= self.page_size
                     self.pos = 0
             elif ch == '\x1b[C':   # 右
-                if self.start + self.page_size <= total:
+                if self.start + self.page_size < total:
                     self.page_index += 1
                     self.start += self.page_size
                     self.pos = 0
@@ -235,6 +242,14 @@ if __name__ == '__main__':
         "Auto Event Delete",
         "Start Sensors Product",
         "Stop Sensors Product",
+        "Auto Event Delete",
+        "Start Sensors Product",
+        "Stop Sensors Product",
+        "Auto Event Delete",
+        "Auto Event Delete",
+        "Start Sensors Product",
+        "Stop Sensors Product",
+        "Auto Event Delete",
         "Auto Event Delete",
         "Start Sensors Product",
         "Stop Sensors Product",
