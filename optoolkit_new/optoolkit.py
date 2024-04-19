@@ -10,21 +10,21 @@ from tools.menu import Menu
 def main():
     m = Menu()
     steps = [
-        "Allinone Check",
-        "Calculate Kudu Tserver Metadata Size",
-        "Process Notify",
-        "Start Sensors Product",
-        "Stop Sensors Product",
-        "Auto Event Delete",
-        "Migration Evaluation",
-        "Zookeeper_maxClientCnxns Change",
-        "Change IP",
-        "Fix docker0",
         "test1",
         "test2"
     ]
-    m.draw(steps,title=['optoolkit','abc'],guide="【Select】↑ ↓ 【choose】Enter 【Search】s/S 【Quit】q/Q/b/B\
+    pos = m.draw(steps,title=['optoolkit','abc'],guide="【Select】↑ ↓ 【choose】Enter 【Search】s/S 【Quit】q/Q/b/B\
 【Page】g/l")
+    msg = f"Your choice 【id】：{pos[0]} 【details】：{pos[1]}"
+    msg = Menu.color_style(msg,'green','','highlight')
+    print(msg)
+
+    if pos[0] == 0:
+        pass
+    if pos[0] == 1:
+        pass
+
+
 
 
 if __name__ == '__main__':

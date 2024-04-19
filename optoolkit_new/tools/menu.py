@@ -106,7 +106,7 @@ class Menu(object):
         return f'\033[{font_style};{foreground_color};{background_color}m{content}\033[0m'
 
     def help_box(self,guide):
-        if self.help_show:
+        if self.help_show and guide:
             help_base = guide
             help_base = self.offset + len(self.pointer) * ' ' + help_base
             res = Menu.color_style(help_base,self.help_color,self.background_color,'highlight') + '\n\n'
@@ -194,6 +194,10 @@ class Menu(object):
         choose_list = list(enumerate(choose))
         total = len(choose_list)
 
+        # title  guide 不是列表转换成列表
+        if title and not isinstance(title,list):
+            title = [str(title)]
+
         while True:
             page_list = choose_list[self.start:self.start+self.page_size] if self.start+self.page_size < total \
                 else choose_list[self.start:total]
@@ -208,9 +212,9 @@ class Menu(object):
 
             if ch == '\r':
                 index = self.start + self.pos
-                return choose[index][0],choose[index][1]
+                return choose_list[index][0],choose_list[index][1]
             elif ch == 'q' or ch == 'Q':
-                break
+                return -1,None
             elif ch == '\x1b[B':  # 下
                 self.pos += 1
                 if self.pos >= len(page_list):
@@ -255,5 +259,5 @@ if __name__ == '__main__':
         "Stop Sensors Product",
         "Auto Event Delete"
     ]
-    m.draw(steps, title='optoolkit_new', guide="【Select】↑ ↓ 【choose】Enter 【Search】s/S 【Quit】q/Q 【Page】g/l")
+    m.draw(steps, title='optoolkit_new', guide="【Select】↑ ↓ 【choose】Enter 【Quit】q/Q")
 
