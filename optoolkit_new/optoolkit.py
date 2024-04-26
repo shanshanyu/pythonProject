@@ -10,8 +10,7 @@ from tools.menu import Menu
 def main():
     m = Menu()
     steps = [
-        "test1",
-        "test2"
+        "kafka move partition"
     ]
     pos = m.draw(steps,title=['optoolkit','abc'],guide="【Select】↑ ↓ 【choose】Enter 【Search】s/S 【Quit】q/Q/b/B\
 【Page】g/l")
@@ -19,12 +18,10 @@ def main():
     msg = Menu.color_style(msg,'green','','highlight')
     print(msg)
 
-    if pos[0] == 0:
+    if pos[1] == "kafka move partition":
         pass
-    if pos[0] == 1:
+    if pos[1] == 1:
         pass
-
-
 
 
 if __name__ == '__main__':
