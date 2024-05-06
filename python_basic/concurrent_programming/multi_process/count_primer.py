@@ -30,7 +30,6 @@ def get_prime(start,end):
             print(i)
 
 
-
 if __name__ == '__main__':
     p1 = multiprocessing.Process(target=get_prime,args=(1,1000))
     p1.start()

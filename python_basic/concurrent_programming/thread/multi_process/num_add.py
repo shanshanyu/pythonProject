@@ -15,7 +15,7 @@ def main():
         res += i
     print(res)
     end = time.time()
-    print('耗时：%.2f' % (end-start))
+    print('耗时：%.2f s' % (end-start))
 
 
 if __name__ == '__main__':
