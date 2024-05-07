@@ -139,6 +139,15 @@ class KafkaPartitionMove(object):
         print(f'{self.reassign_script} --zookeeper {self.zookeeper_host} --reassignment-json-file {ultra_assign_file} --bootstrap-server {self.broker_host_url} --verify')
 
 
+def exec_move_partition():
+    print('输入参数示例： zookeeper_host  topic_name  partition_id  dest_host  dest_disk')
+    print('hybrid01  event_topic  14  hybrid02  /sensorsdata/seqdata02/kafka/data  表示将 hybrid02 节点 event_topic 14 从其他盘移动到 /sensorsdata/seqdata02 盘')
+    input_args = input()
+    input_args_lst = input_args.split()
+    m = KafkaPartitionMove(input_args_lst[0], input_args_lst[1], input_args_lst[2], input_args_lst[3], input_args_lst[4])
+    m.move_partition()
+
+
 def main():
     parser = argparse.ArgumentParser(description='迁移 kafka topic 的 partition')
     parser.add_argument('zookeeper_host', help='zookeeper host')

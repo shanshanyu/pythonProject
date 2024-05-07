@@ -5,6 +5,7 @@ version: 1.0
 desc: optoolkit 命令行入口
 '''
 from tools.menu import Menu
+from src.kafka_move_partition import exec_move_partition
 
 
 def main():
@@ -12,14 +13,15 @@ def main():
     steps = [
         "kafka move partition"
     ]
-    pos = m.draw(steps,title=['optoolkit','abc'],guide="【Select】↑ ↓ 【choose】Enter 【Search】s/S 【Quit】q/Q/b/B\
+    pos = m.draw(steps,title='optoolkit',guide="【Select】↑ ↓ 【choose】Enter 【Search】s/S 【Quit】q/Q/b/B\
 【Page】g/l")
     msg = f"Your choice 【id】：{pos[0]} 【details】：{pos[1]}"
+    # 添加前景色，背景色，样式
     msg = Menu.color_style(msg,'green','','highlight')
     print(msg)
 
     if pos[1] == "kafka move partition":
-        pass
+        exec_move_partition()
     if pos[1] == 1:
         pass
 
