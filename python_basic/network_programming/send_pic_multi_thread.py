@@ -28,6 +28,8 @@ class SendPicThread(threading.Thread):
         :return:
         '''
         self.client.send(self.data)
+        # 关闭连接
+        self.client.close()
 
 
 def main():
