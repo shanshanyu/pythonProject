@@ -16,8 +16,5 @@ def get_log():
     dest_file.close()
 
 
-
-
-
 if __name__ == '__main__':
     get_log()
