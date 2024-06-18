@@ -19,6 +19,7 @@ class Student(object):
         print('set方法执行了')
         self.__name = name
 
+
 if __name__ == '__main__':
     s = Student('zhagnsan')
     s.name1 = 'lisi'

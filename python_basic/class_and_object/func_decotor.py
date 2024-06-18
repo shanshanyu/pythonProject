@@ -26,8 +26,6 @@ class Student(object):
         del self.__name
 
 
-
-
 if __name__ == '__main__':
     p = Student('zhangsan')
     print(p.name)

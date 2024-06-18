@@ -11,25 +11,20 @@ class Student(object):
     def __init__(self,name):
         self.__name = name
 
-
     def name1(self):
+        print('read exec')
         return self.__name
 
-
     def name2(self,name):
+        print('write exec')
         self.__name = name
 
-
     def test1(self):
+        print('del exec')
         del self.__name
 
     #这种方式也可以
     name = property(name1,name2,test1,'func decorator')
-
-
-
-
-
 
 
 if __name__ == '__main__':
@@ -37,5 +32,5 @@ if __name__ == '__main__':
     print(p.name)
     p.name = 4
     print(p.name)
-    #del p.name
+    del p.name
     #print(p.name)

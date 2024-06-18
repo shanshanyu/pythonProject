@@ -137,6 +137,8 @@ class KafkaPartitionMove(object):
             exit(1)
         print('{} 迁移副本命令完成，使用如下命令检查扩容结果：'.format(self.topic_name))
         print(f'{self.reassign_script} --zookeeper {self.zookeeper_host} --reassignment-json-file {ultra_assign_file} --bootstrap-server {self.broker_host_url} --verify')
+        print('使用如下命令回滚：')
+        print(f'{self.reassign_script} --zookeeper {self.zookeeper_host} --reassignment-json-file {current_assign_file} --bootstrap-server {self.broker_host_url} --execute')
 
 
 def exec_move_partition():
