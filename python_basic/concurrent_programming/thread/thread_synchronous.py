@@ -29,6 +29,7 @@ class Account(object):   #典型的线程安全类，构造方法初始化锁，
         finally:
             self.lock.release()  #释放锁
 
+
 if __name__ == '__main__':
     a = Account('1234',500)  #存钱
 
