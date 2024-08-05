@@ -47,8 +47,13 @@ def time_spend(func):
         wrapper.__wrapped__ = wrapped
         return wrapper
     '''
+
+    # test = functools.wraps(func)(test) = decorator(test) = test
+    # functools.update_wrapper(test,func)
+    # functools.wraps(func) 的作用是把 func 函数的属性传递给 test,然后其他函数用 spend_time函数去装饰，就会返回test,就等于把其他函数换成了 test，执行其他函数等于执行了test
+
     @functools.wraps(func)
-    def test(*args,**kwargs):  # test = decorator   调用test就等价于调用funtools.update_wrapper(wrapper,func)
+    def test(*args,**kwargs):
         # 开始时间
         start = time.time()
         func(*args,**kwargs)
