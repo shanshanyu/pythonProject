@@ -14,6 +14,7 @@ version: 1.0
 # 用自己的话表述
 # 伪代码  用递归解决
 
+
 def rabbit_all(num): # 封闭函数
     def rabbit_small(num):  # 局部函数
         if num == 1:
@@ -31,6 +32,7 @@ def rabbit_all(num): # 封闭函数
         return rabbit_medium(num-1)+rabbit_big(num-1)
 
     return rabbit_big(num) + rabbit_medium(num) + rabbit_small(num)
+
 
 if __name__ == '__main__':
     for i in range(1,31):
