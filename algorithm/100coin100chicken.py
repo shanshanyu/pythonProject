@@ -8,7 +8,7 @@ version: 1.0
 
 for x in range(0,20):
     for y in range(0,34):
-        for z in range(0,100):
+        for z in range(0,101):
             if 5*x+3*y+(1/3)*z == 100 and x+y+z == 100:
                 print('公鸡',x)
                 print('母鸡', y)
