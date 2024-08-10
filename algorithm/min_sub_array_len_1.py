@@ -22,13 +22,17 @@ def min_sub_array_len(target,nums):
     ans = n+1  # 初始化ans 为一个很大的值
     for right,x in enumerate(nums):  # i 是索引，x是值
         s += x  # 动右指针，把上一次的结果用起来
-        while s - nums[left] >= target:
+        while s >= target:
+            ans = min(ans, right - left + 1)
             s -= nums[left]
             left += 1
-            ans = min(ans,right-left+1)
 
-        if s >= target:
-            ans = min(ans,right-left+1)
+        # while s - nums[left] >= target:
+        #     s -= nums[left]
+        #     left += 1
+        #
+        # if s >= target:
+        #     ans = min(ans,right-left+1)
 
     return ans if ans < n+1 else 0
 
