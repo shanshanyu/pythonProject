@@ -22,13 +22,31 @@ def sub_arr_num(nums,k):
     s = 1
     left = 0
     ans = 0
-    for right,x in enumerate(nums):
+    for right, x in enumerate(nums):
         s *= x
+        '''
+        写法一：
+        加了 left<right后的执行情况：
+        第一个数比k大，什么都没做
+        第二个数还是比k大，把第一个数除掉了
+        第三个数还是比k大，把第一个数除掉了。
+        写法二：
+        不加left<right
+        第一个数比k大，直接除掉了，left+1，left>right
+        right-left+1 = 0
+        代码会简洁一点
+        '''
+        # while s >= k and left < right:  #可以不需要 left < right
+        #     s /= nums[left]
+        #     left += 1
+
+        # if s < k:
+        #     ans += right-left+1
         while s >= k:
             s /= nums[left]
             left += 1
 
-        ans += right-left+1
+        ans += right - left + 1
 
     return ans
 
