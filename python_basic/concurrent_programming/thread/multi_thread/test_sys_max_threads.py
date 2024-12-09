@@ -22,6 +22,9 @@ def main():
         count += 1
         print(count)
 
+    for t in threads:
+        t.join()
+
 
 if __name__ == '__main__':
     main()
