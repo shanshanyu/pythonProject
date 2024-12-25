@@ -28,8 +28,12 @@ def print_child_count(path):
     node_list = zk.get_children(path)
 
     for node in node_list:
-        count = count_child_recursively(zk,f"{path}/{node}")
-        print(f"{path}/{node}",count)
+        if path == '/':
+            count = count_child_recursively(zk, f"/{node}")
+            print(f"/{node}", count)
+        else:
+            count = count_child_recursively(zk, f"{path}/{node}")
+            print(f"{path}/{node}", count)
 
     zk.stop()
 
