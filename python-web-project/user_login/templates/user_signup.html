@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>signup</title>
+    <link rel="stylesheet" href="/static/common.css">
 </head>
 <body>
-    <h1>用户注册</h1>
-    <form action="/post/reg" method="post">
+    <h1 class="c3">用户注册</h1>
+    <form action="/reg" method="post">
         <div>
             用户名: <input type="text" name="username">
         </div>
@@ -23,9 +24,9 @@
 
         <div>
             爱好:
-            <input type="checkbox" >篮球
-            <input type="checkbox">足球
-            <input type="checkbox">打游戏
+            <input type="checkbox" name="hobby" value="0">篮球
+            <input type="checkbox" name="hobby" value="1">足球
+            <input type="checkbox" name="hobby" value="2">打游戏
         </div>
 
         <div>

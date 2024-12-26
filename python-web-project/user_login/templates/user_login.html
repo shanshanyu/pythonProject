@@ -2,9 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>用户登录</title>
+    <link rel="stylesheet" href="/static/common.css">
+    <style>
+        .c1{
+            height:50px;
+        }
+    </style>
 </head>
 <body>
+<h1 style="color:red">用户登录</h1>
+<form action="/login" method="post">
+    <div class="c1">
+        用户名：<input type="text" name="user">
+    </div>
+    <div class="c1">
+        密码：<input type="text" name="pass">
+    </div>
+    <input type="submit" value="提交">
 
+</form>
 </body>
 </html>
