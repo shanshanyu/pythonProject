@@ -3,104 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <title>layout</title>
-  <style>
-    .main{
-      width: 800px;
-      margin: 0 auto;
-    }
-    .header,.nav,.container,.footer{
-      float: left;
-      width: 100%;
-    }
-    .header{
-      background: #ccc;
-      text-align: center;
-    }
-    .nav{
-      background: #333;
-    }
-    .nav a{
-      color: #fff;
-      padding: 10px 20px;
-      display: inline-block;
-    }
-    .nav a:hover{
-      background: #bbb;
-      color: #000;
-    }
-    .lside{
-      width: 200px;
-      float: left;
-    }
-    .rside{
-      width: 200px;
-      float: right;
-    }
+    <style>
+        .main{
+          width: 800px;
+          margin: 0 auto;
+        }
+        .header,.nav,.content,.footer{
+          float: left;
+          width: 100%;
+        }
+        .header{
+          background: #ccc;
+          text-align: center;
+        }
+        .nav{
+          background: #333;
+        }
+        .nav a{
+          color: #fff;
+          padding: 10px 20px;
+          display: inline-block;
+        }
+        .nav a:hover{
+          background: #bbb;
+          color: #000;
+        }
+        .lside{
+          width: 200px;
+          float: left;
+        }
+        .rside{
+          width: 200px;
+          float: right;
+        }
 
-    .content{
-      margin: 0 205px;
-    }
+        .mid{
+          margin: 0 205px;
+        }
 
-    .lside,.rside,.content{
-      padding: 5px;
-    }
+        .lside,.rside,.mid{
+          padding: 5px;
+        }
 
-    .footer{
-      background: #ccc;
-      text-align: center;
-    }
-  </style>
+        .footer{
+          background: #ccc;
+          text-align: center;
+        }
+    </style>
 </head>
 <body>
 <div class="main">
-  <div class="header">
-    <h1>我是网页的头部</h1>
-    <p>这里主要是放网站的logo或是banner广告</p>
-  </div>
-  <div class="nav">
-    <a href="#">导航项</a>
-    <a href="#">导航项</a>
-    <a href="#">导航项</a>
-    <a href="#">导航项</a>
-  </div>
-  <div class="container">
-    <!--主体放三个盒子，左中右 用margin进行三栏布局，中间的栏是自适应的-->
-    <div class="lside">
-      <h2>我是左边栏</h2>
-      <p>我是左边栏的内容
-        我是左边栏的内容
-        我是左边栏的内容
-        我是左边栏的内容
-        我是左边栏的内容
-        我是左边栏的内容
-      </p>
+    <div class="header">
+        <h1>我是网页的头部</h1>
+        <p>这里主要是放网站的logo或是banner广告</p>
     </div>
-    <div class="rside">
-      <h2>我是右边栏</h2>
-      <p>我是右边栏的内容
-        我是右边栏的内容
-        我是右边栏的内容
-        我是右边栏的内容
-        我是右边栏的内容
-        我是右边栏的内容
-      </p>
+    <div class="nav">
+        <a href="#">导航项</a>
+        <a href="#">导航项</a>
+        <a href="#">导航项</a>
+        <a href="#">导航项</a>
     </div>
     <div class="content">
-      <h2>我是中间栏</h2>
-      <p>我是中间栏的内容
-        我是中间栏的内容
-        我是中间栏的内容
-        我是中间栏的内容
-        我是中间栏的内容
-        我是中间栏的内容
-      </p>
+        <!--主体放三个盒子，左中右 用margin进行三栏布局，中间的栏是自适应的-->
+        <div class="lside">
+            <h2>我是左边栏</h2>
+            <p>我是左边栏的内容
+                我是左边栏的内容
+                我是左边栏的内容
+                我是左边栏的内容
+                我是左边栏的内容
+                我是左边栏的内容
+            </p>
+        </div>
+        <div class="rside">
+            <h2>我是右边栏</h2>
+            <p>我是右边栏的内容
+                我是右边栏的内容
+                我是右边栏的内容
+                我是右边栏的内容
+                我是右边栏的内容
+                我是右边栏的内容
+            </p>
+        </div>
+        <div class="mid">
+            <h2>我是中间栏</h2>
+            <p>我是中间栏的内容
+                我是中间栏的内容
+                我是中间栏的内容
+                我是中间栏的内容
+                我是中间栏的内容
+                我是中间栏的内容
+            </p>
+        </div>
     </div>
-  </div>
-  <div class="footer">
-    <h2>我是网页的底部</h2>
-    <p>主要放一些网站的备案信息，版权信息</p>
-  </div>
+    <div class="footer">
+        <h2>我是网页的底部</h2>
+        <p>主要放一些网站的备案信息，版权信息</p>
+    </div>
 </div>
-
 </body>
 </html>
