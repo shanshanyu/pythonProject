@@ -3,57 +3,243 @@
 <head>
     <meta charset="UTF-8">
     <title>shop</title>
-  <style>
-    body{
-      margin:0;
-    }
-    .header{
-      background-color:#333;
-    }
-    .header .left{
-      float:left;
-    }
-    .header .right{
-      float:right;
-    }
-    .container{
-      width:1226px;
-      margin:0 auto;
-    }
-    .header a{
-      color:#b0b0b0;
-      line-height:40px;
-      font-size:12px;
-      margin-right:10px;
-      display:inline-block;
-    }
-  </style>
+    <style>
+        body{
+          margin:0;
+        }
+        .header .site-topbar{
+          background-color:#333;
+        }
+        .header .left{
+          float:left;
+        }
+        .header .right{
+          float:right;
+        }
+        .container{
+          width:1226px;
+          margin:0 auto;
+        }
+        img{
+            height: 100%;
+            width: 100%;
+        }
+        .header .site-topbar a{
+          display:inline-block;
+          color:#b0b0b0;
+          line-height:40px;
+          font-size:12px;
+          margin-right:10px;
+          text-decoration: none;
+        }
+
+        .header .site-header .header-logo{
+          float: left;
+          width: 120px;
+          margin-top: 22px;
+        }
+        .header .site-header .header-logo a{
+          display:inline-block;
+        }
+        .header .site-header .header-logo a img{
+          width: 56px;
+          height: 56px; 
+        }
+        .header .site-header .header-nav{
+          float: left;
+        }
+        .header .site-header .header-search{
+          float: right;
+          margin-top: 22px;
+        }
+        .header .site-header .header-search input{
+          display: inline-block;
+          line-height: 48px;
+          height: 48px;
+          width: 223px;
+          font-size: 14px;
+        }
+      .header .site-header .header-nav a{
+        line-height: 100px;
+        display: inline-block;
+        color: #333;
+        font-size: 16px;
+        padding: 0px 10px;
+        text-decoration: none;
+      }
+        .header .site-header .header-nav a:hover{
+          color: #ff6700;
+        }
+
+        .home-hero-sub{
+            margin-top: 14px;
+        }
+        .home-hero-sub .channel{
+          width: 234px;
+          height: 170px;
+          float: left;
+          background: #5f5750;
+        }
+        .home-hero-sub .channel .item{
+          width: 70px;
+          height: 82px;
+          padding: 0 3px;
+          float: left;
+          border: 1px solid red;
+          text-align: center;
+          font-size: 12px;
+        }
+        .home-hero-sub .channel .item a{
+          display: inline-block;
+          padding-top: 18px;
+          text-decoration: none;
+        }
+        .home-hero-sub .channel .item img{
+          margin: 0 auto;
+          height: 24px;
+          width: 24px;
+          display: block;
+        }
+        .home-hero-sub .list-item{
+            float: left;
+            height: 170px;
+            width: 316px;
+            margin-left: 14px;
+        }
+        .download{
+            position: relative;
+        }
+        .download .qcode{
+            display: none;
+            position: absolute;
+            height: 100px;
+            width: 100px;
+            left: -20px;
+        }
+        .download:hover .qcode{
+            display: block;
+
+        }
+    </style>
 </head>
 <body>
 <div class="header">
-  <div class="container">
-    <div class="left">
-      <a href="xx">小米官网</a>
-      <a href="xx">小米商城</a>
-      <a href="xx">小米澎湃OS</a>
-      <a href="xx">小米汽车</a>
-      <a href="xx">云服务</a>
-      <a href="xx">loT</a>
-      <a href="xx">有品</a>
-      <a href="xx">小爱开放平台</a>
-      <a href="xx">资质证照</a>
-      <a href="xx">协议规则</a>
-      <a href="xx">下载app</a>
-      <a href="xx">Select Location</a>
+    <div class="site-topbar">
+        <div class="container">
+            <div class="left">
+                <a href="xx">小米官网</a>
+                <a href="xx">小米商城</a>
+                <a href="xx">小米澎湃OS</a>
+                <a href="xx">小米汽车</a>
+                <a href="xx">云服务</a>
+                <a href="xx">loT</a>
+                <a href="xx">有品</a>
+                <a href="xx">小爱开放平台</a>
+                <a href="xx">资质证照</a>
+                <a href="xx">协议规则</a>
+                <a class="download" href="xx">下载app
+                    <img class="qcode" src="../static/download.png" alt="">
+                </a>
+                <a href="xx">Select Location</a>
+            </div>
+            <div class="right">
+                <a href="xx">登录</a>
+                <a href="xx">注册</a>
+                <a href="xx">消息通知</a>
+                <a href="xx">购物车</a>
+            </div>
+            <div style="clear:both"></div>
+        </div>
     </div>
-    <div class="right">
-      <a href="xx">登录</a>
-      <a href="xx">注册</a>
-      <a href="xx">消息通知</a>
-      <a href="xx">购物车</a>
+    <div class="site-header">
+        <div class="container">
+            <div class="header-logo">
+                <a href="https://mi.com">
+                    <img src="../static/logo-mi2.png" alt="">
+                </a>
+            </div>
+            <div class="header-nav">
+                <a href="xx">Xiaomi手机</a>
+                <a href="xx">REDMI手机</a>
+                <a href="xx">电视</a>
+                <a href="xx">笔记本</a>
+                <a href="xx">平板</a>
+                <a href="xx">家电</a>
+                <a href="xx">路由器</a>
+                <a href="xx">服务中心</a>
+                <a href="xx">社区</a>
+            </div>
+            <div class="header-search">
+                <input type="text">
+            </div>
+            <div style="clear:both"></div>
+        </div>
     </div>
-    <div style="clear:both"></div>
-  </div>
 </div>
+<div class="home">
+    <div class="home-hero-container">
+        <div class="home-hero">
+            <div class="container">
+                <img src="../static/banner.jpg" alt="">
+            </div>
+        </div>
+        <div class="home-hero-sub">
+            <div class="container">
+                <div class="channel">
+                    <div class="item">
+                        <a href="xx">
+                            <img src="../static/item-1.png" alt="">
+                            保障服务
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a href="xx">
+                            <img src="../static/item-2.png" alt="">
+                            企业团购
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a href="xx">
+                            <img src="../static/item-3.png" alt="">
+                            F码通道
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a href="xx">
+                            <img src="../static/item-4.png" alt="">
+                            米粉卡
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a href="xx">
+                            <img src="../static/item-5.png" alt="">
+                            以旧换新
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a href="xx">
+                            <img src="../static/item-6.png" alt="">
+                            话费充值
+                        </a>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+                <div class="list-item">
+                    <img src="../static/home-sub-1.png" alt="">
+                </div>
+                <div class="list-item">
+                    <img src="../static/home-sub-2.png" alt="">
+                </div>
+                <div class="list-item">
+                    <img src="../static/home-sub-3.png" alt="">
+                </div>
+                <div style="clear:both;"></div>
+            </div>
+
+        </div>
+    </div>
+    <div class="home-page-container"></div>
+</div>
+<div style="color"></div>
 </body>
 </html>
