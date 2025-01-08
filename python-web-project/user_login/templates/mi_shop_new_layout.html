@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>小米商城</title>
     <style>
+        body{
+            margin: 0;
+        }
         .header{
             background: #333;
         }
@@ -37,8 +40,10 @@
             float: left;
         }
         .nav-logo img{
+            margin-top: 22px;
             height: 56px;
             width: 56px;
+            margin-right: 120px;
         }
         .nav-item{
             float: left;
@@ -47,11 +52,56 @@
             line-height: 100px;
             text-decoration: none;
             font-size: 16px;
+            color: #333;
+            padding: 0 10px;
             display: inline-block;
         }
         .nav-search{
             float:right;
         }
+
+        .content img{
+             height: 100%;
+             width: 100%;
+        }
+        .footer-img img{
+            height: 56px;
+            width: 56px;
+        }
+
+        .channel{
+            width: 234px;
+        }
+        .channel-list{
+            margin: 0;
+            padding: 3px;
+            background: #5f5750;
+            text-align: center;
+            list-style-type: none;
+            font-size: 12px;
+        }
+        .channel-list li{
+            width: 70px;
+            height: 82px;
+            float: left;
+            padding: 0 3px;
+
+
+        }
+        .channel-list a{
+            padding-top: 18px;
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            opacity: 0.7;
+        }
+        .channel-list img{
+            height: 24px;
+            width: 24px;
+            display: block;  /*img需要block，img居中是通过下面的 margin auto 来显示的，如果不是block，不能设置margin*/
+            margin: 0 auto 4px;
+        }
+
     </style>
 </head>
 <body>
@@ -81,7 +131,7 @@
         </div>
     </div>
     <div class="nav">
-        <div class="container">
+        <div class="container clearfix">
             <div class="nav-logo">
                 <a href="#">
                     <img src="../static/logo-mi2.png" alt="">
@@ -99,12 +149,66 @@
                 <a href="xx">社区</a>
             </div>
             <div class="nav-search"></div>
-
         </div>
-
     </div>
-    <div class="content"></div>
-    <div class="footer"></div>
+    <div class="content">
+        <div class="container">
+            <div class="banner">
+                <img src="../static/banner.jpg" alt="">
+            </div>
+            <div class="sub-banner">
+                <div class="channel">
+                    <ul class="channel-list clearfix">
+                        <li>
+                            <a href="xx">
+                                <img src="../static/item-1.png" alt="">
+                                保障服务
+                            </a>
+                        </li>
+                        <li>
+                            <a href="xx">
+                                <img src="../static/item-2.png" alt="">
+                                企业团购
+                            </a>
+                        </li>
+                        <li>
+                            <a href="xx">
+                                <img src="../static/item-3.png" alt="">
+                                F码通道
+                            </a>
+                        </li>
+                        <li>
+                            <a href="xx">
+                                <img src="../static/item-4.png" alt="">
+                                米粉卡
+                            </a>
+                        </li>
+                        <li>
+                            <a href="xx">
+                                <img src="../static/item-5.png" alt="">
+                                以旧换新
+                            </a>
+                        </li>
+                        <li>
+                            <a href="xx">
+                                <img src="../static/item-6.png" alt="">
+                                话费充值
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="container">
+            <div class="footer-img">
+                <img src="../static/logo-mi2.png" alt="">
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
