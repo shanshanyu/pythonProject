@@ -6,10 +6,22 @@
 </head>
 <body>
 <div id="marquee">
-  小玉米跑起来
+    小玉米跑起来
 </div>
-<script>
-  var ele = document.
+<script type="text/javascript">
+    function show() {
+        var ele = document.getElementById('marquee');
+        var eleContent = ele.innerText;
+        var firstChar = eleContent[0];
+        var subChars = eleContent.substring(1, eleContent.length);
+        var newContent = subChars + firstChar;
+
+        ele.innerText = newContent;
+    }
+
+    setInterval(show,1000);
+
+
 </script>
 </body>
 </html>

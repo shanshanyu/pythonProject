@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .channel {
+            width: 234px;
+            background: #5f5750;  /* 给整个盒子设置宽度和背景色*/
+        }
+
+        .clearfix:after {  /*清除浮动，*/
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .channel-list {
+            list-style-type: none;
+            margin: 0;
+            padding: 3px;
+        }
+
+        .channel-list li {
+            float: left;   /*如果想让块级元素在一行显示，就需要添加浮动；不加浮动的话需要使用inline-block，inline-block
+            元素之间有空白字符，计算宽度会有问题，最好使用块级+浮动*/
+            width: 70px;
+            height: 82px;
+            text-align: center;
+            padding: 0 3px;
+        }
+
+        .channel-list li a {
+            display: block;  /*把a元素从行内变块级，让a元素占满整个li*/
+            text-decoration: none;
+            font-size: 12px;
+            color: #fff;
+            padding-top: 18px; /*a元素放在li的中间，a元素的高度是 44，li的高度是82，剩余38，除2等于19px,所以得加一个padding-top*/
+        }
+        .channel-list li a img{
+            display: block; /*把img变成块级，单独占一行,下面还需要居中*/
+            height: 24px;
+            width: 24px;
+            margin: 0 auto 4px; /*让img居中显示，在下面留一个4px的外边距，与字体保持点距离*/
+        }
+    </style>
+</head>
+<body>
+<div class="channel">
+    <ul class="channel-list clearfix">
+        <li>
+            <a href="xx">
+                <img src="../static/item-1.png" alt="">
+                保障服务
+            </a>
+        </li>
+        <li>
+            <a href="xx">
+                <img src="../static/item-2.png" alt="">
+                企业团购
+            </a>
+        </li>
+        <li>
+            <a href="xx">
+                <img src="../static/item-3.png" alt="">
+                F码通道
+            </a>
+        </li>
+        <li>
+            <a href="xx">
+                <img src="../static/item-4.png" alt="">
+                米粉卡
+            </a>
+        </li>
+        <li>
+            <a href="xx">
+                <img src="../static/item-5.png" alt="">
+                以旧换新
+            </a>
+        </li>
+        <li>
+            <a href="xx">
+                <img src="../static/item-6.png" alt="">
+                话费充值
+            </a>
+        </li>
+    </ul>
+
+</div>
+
+</body>
+</html>
