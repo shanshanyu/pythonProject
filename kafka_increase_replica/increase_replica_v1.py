@@ -46,6 +46,10 @@ def increase_partition(topic_name,zookeeper_host):
         reassign_script = '/sensorsdata/main/program/sp/sdp/1.0.0.0-123/kafka/bin/kafka-reassign-partitions.sh'
     elif os.path.exists('/sensorsdata/main/program_entity/kafka/artifacts/kafka_core/2.8.1.3094/bin/kafka-reassign-partitions.sh'):
         reassign_script = '/sensorsdata/main/program_entity/kafka/artifacts/kafka_core/2.8.1.3094/bin/kafka-reassign-partitions.sh'
+    elif os.path.exists('/sensorsdata/main/program_entity/kafka/artifacts/kafka_core/2.8.2.3225/bin/kafka-reassign-partitions.sh'):
+        reassign_script = '/sensorsdata/main/program_entity/kafka/artifacts/kafka_core/2.8.2.3225/bin/kafka-reassign-partitions.sh'
+    elif os.path.exists('/sensorsdata/main/program/kafka/kafka/kafka_broker/bin/kafka-reassign-partitions.sh'):
+        reassign_script = '/sensorsdata/main/program/kafka/kafka/kafka_broker/bin/kafka-reassign-partitions.sh'
 
     if not os.path.exists(reassign_script):
         print('kafka-reassign-partitions.sh 脚本路径找不到，不能使用此脚本')
@@ -63,6 +67,7 @@ def increase_partition(topic_name,zookeeper_host):
 
     reassign_cmd = f'{reassign_script} --zookeeper {zookeeper_host} --topics-to-move-json-file {reassign_file} ' \
                    f'--broker-list {broker_id_list_str}  --generate |grep Current -A 1|grep -v Current'
+
     try:
         completed_process = subprocess.run(reassign_cmd, shell=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output = completed_process.stdout
