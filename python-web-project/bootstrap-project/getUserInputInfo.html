@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>获取用户输入的信息</title>
+</head>
+<body>
+<input type="text" id="userName" placeholder="用户名">
+<input type="text" id="userEmail" placeholder="邮箱">
+<input type="button" value="提交" onclick="getInfo()">
+
+<script src="js/jquery-3.7.1.min.js"></script>
+<script type="text/javascript">
+    function getInfo(){
+        var userName = $("#userName").val();
+        var userEmail = $("#userEmail").val();
+        console.log(userName);
+        console.log(userEmail);
+    }
+</script>
+
+</body>
+</html>

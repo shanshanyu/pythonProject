@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>操作表格</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        td {
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <td>ID</td>
+        <td>姓名</td>
+        <td>操作</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>1</td>
+        <td>小玉米</td>
+        <td><input type="button" value="删除"></td>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>小玉米</td>
+        <td><input type="button" value="删除"></td>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>小玉米</td>
+        <td><input type="button" value="删除"></td>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>小玉米</td>
+        <td><input type="button" value="删除"></td>
+    </tr>
+    </tbody>
+</table>
+
+<script src="js/jquery-3.7.1.min.js"></script>
+<script type="text/javascript">
+    //点击每个删除按钮，把相应的行删掉
+    //$document.ready(function(){});
+    $(function(){
+        $("input").click(function(){
+            $(this).parent().parent().remove(); //找到 td 的父元素，remove 掉
+        });
+    });
+</script>
+</body>
+</html>
