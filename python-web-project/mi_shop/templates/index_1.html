@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>小米商城</title>
+    <link rel="stylesheet" href="../static/css/iconfont/iconfont.css">
+    <style>
+        body {
+            margin: 0;
+        }
+
+        ul {
+            margin: 0;
+            list-style-type: none;
+        }
+
+        .clearfix:after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+
+        /*黑色导航栏 start*/
+        .header {
+            background: #333;
+            height: 40px;
+        }
+
+        .container {
+            width: 1226px;
+            /*container水平居中*/
+            margin: 0 auto;
+        }
+
+        .header-left {
+            float: left;
+        }
+
+        .header-right {
+            float: right;
+            position: relative;
+        }
+
+        .header a {
+            font-size: 12px;
+            line-height: 40px;
+            color: #b0b0b0;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .header .sep {
+            color: #424242;
+            margin: 0 4px;
+        }
+
+        .download {
+            position: relative;
+        }
+
+        .download:hover .appcode {
+            height: 148px;
+        }
+
+        .appcode {
+            width: 124px;
+            height: 0;
+            background: #fff;
+            box-shadow: 0 1px 5px #aaa;
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            margin-left: -62px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .appcode img {
+            display: block;
+            width: 90px;
+            margin: 18px auto 12px;
+        }
+
+        .appcode p {
+            font-size: 12px;
+            line-height: 12px;
+            color: #333;
+        }
+
+        .cart {
+            width: 120px;
+            height: 40px;
+            background: #424242;
+            padding-left: 25px;
+            font-style: normal;
+        }
+
+        .cart:hover {
+            background: #fff;
+            color: #ff6700;
+        }
+
+        .cart:hover ~ .cart-list {
+            height: 100px;
+        }
+
+        .cart-list {
+            width: 316px;
+            height: 0;
+            background: #fff;
+            box-shadow: 0 1px 5px #aaa;
+            position: absolute;
+            top: 40px;
+            right: 0;
+            color: #424242;
+            line-height: 100px;
+            font-size: 12px;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        /*    黑色导航栏 end*/
+
+
+        /*    白色导航栏 start*/
+        .nav{
+            height: 100px;
+        }
+        .nav-logo{
+            float: left;
+        }
+        .nav-logo img{
+            display: block;
+            width: 55px;
+            height: 55px;
+            margin-top: 22px;
+        }
+
+        .nav-blank{
+            width: 20px;
+            height: 100px;
+        }
+
+        .nav-left{
+            float: left;
+            width: 875px;
+            line-height: 100px;
+        }
+        .nav-right{
+            float: right;
+            width: 296px;
+            height: 100px;
+        }
+        .nav-left ul{
+            float: left;
+        }
+        .nav-left ul li{
+            float: left;
+        }
+        .nav-left a{
+            color: #333;
+            padding: 0 10px;
+            text-decoration: none;
+        }
+        .nav-left a:hover{
+            color: #ff6700;
+        }
+
+        .nav-right input{
+            width: 244px;
+            height: 50px;
+            float: left;
+            border: 1px solid #e0e0e0;
+            box-sizing: border-box;
+            margin-top: 22px;
+            outline: none;
+        }
+        .nav-right button{
+
+            width: 52px;
+            height: 50px;
+            float: right;
+            margin-top: 22px;
+        }
+        .nav-right button:hover{
+            background: #ff6700;
+            color: #fff;
+        }
+
+        /*    白色导航栏 end*/
+
+    </style>
+</head>
+<body>
+<!--黑色导航栏 start-->
+<div class="header">
+    <div class="container clearfix">
+        <!--        这里的条目可以通过div+a标签，也可以通过ul+li来做-->
+        <div class="header-left">
+            <a href="xx">小米官网</a>
+            <span class="sep">|</span>
+            <a href="xx">小米商城</a>
+            <span class="sep">|</span>
+            <a href="xx">小米澎湃OS</a>
+            <span class="sep">|</span>
+            <a href="xx">小米汽车</a>
+            <span class="sep">|</span>
+            <a href="xx">云服务</a>
+            <span class="sep">|</span>
+            <a href="xx">loT</a>
+            <span class="sep">|</span>
+            <a href="xx">有品</a>
+            <span class="sep">|</span>
+            <a href="xx">小爱开放平台</a>
+            <span class="sep">|</span>
+            <a href="xx">资质证照</a>
+            <span class="sep">|</span>
+            <a href="xx">协议规则</a>
+            <span class="sep">|</span>
+            <a class="download" href="xx">下载app
+                <div class="appcode">
+                    <img src="../static/img/download.png" alt="">
+                    <p>小米商城APP</p>
+                </div>
+            </a>
+            <span class="sep">|</span>
+            <a href="xx">Select Location</a>
+        </div>
+        <div class="header-right">
+            <a href="xx">登录</a>
+            <span class="sep">|</span>
+            <a href="xx">注册</a>
+            <span class="sep">|</span>
+            <a href="xx">消息通知</a>
+            <a href="xx" class="cart">
+                <i class="iconfont">&#xe607;</i>
+                <i>购物车（0）</i>
+            </a>
+            <div class="cart-list">
+                购物车中还没有商品，赶紧选购吧！
+            </div>
+        </div>
+    </div>
+</div>
+<!--黑色导航栏 end-->
+
+<!--白色导航栏 start-->
+<div class="nav">
+    <div class="container clearfix">
+        <div class="nav-logo">
+            <a href="#">
+                <img src="../static/img/logo.png" alt="">
+            </a>
+        </div>
+        <div class="nav-left">
+            <ul>
+                <li class="nav-blank"></li>
+                <li>
+                    <a href="#">Xiaomi手机</a>
+                </li>
+                <li>
+                    <a href="#">REDMI手机</a>
+                </li>
+                <li>
+                    <a href="#">电视</a>
+                </li>
+                <li>
+                    <a href="#">笔记本</a>
+                </li>
+                <li>
+                    <a href="#">平板</a>
+                </li>
+                <li>
+                    <a href="#">家电</a>
+                </li>
+                <li>
+                    <a href="#">路由器</a>
+                </li>
+                <li>
+                    <a href="#">服务中心</a>
+                </li>
+                <li>
+                    <a href="#">社区</a>
+                </li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <input type="text" placeholder="测试">
+            <button class="iconfont">&#xe60a;</button>
+        </div>
+    </div>
+</div>
+<!--白色导航栏 end-->
+<div class="content"></div>
+<div class="footer"></div>
+</body>
+</html>
