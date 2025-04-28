@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>左边的菜单，点击后才显示，默认隐藏</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        #menu {
+            width: 200px;
+            height: 800px;
+            border: 1px solid red;
+        }
+
+        .item .header {
+            background: yellow;
+            padding: 10px;
+            border-bottom: 1px dotted green;
+        }
+
+        .content a {
+            display: block;
+            text-decoration: none;
+            border: 1px solid red;
+        }
+
+        .hide {
+            display: none
+        }
+
+        /*      .header:hover + .content{
+                  display: block;
+              }*/
+    </style>
+</head>
+<body>
+<div id="menu">
+    <div class="item">
+<!--        <div class="header" onclick="showMe(this)">北京</div>-->
+        <div class="header">北京</div>
+        <div class="content hide">
+            <a href="#">a</a>
+            <a href="#">a</a>
+            <a href="#">a</a>
+            <a href="#">a</a>
+        </div>
+    </div>
+    <div class="item">
+<!--        <div class="header" onclick="showMe(this)">上海</div>-->
+        <div class="header">上海</div>
+        <div class="content hide">
+            <a href="#">b</a>
+            <a href="#">b</a>
+            <a href="#">b</a>
+            <a href="#">b</a>
+        </div>
+    </div>
+</div>
+<script src="js/jquery-3.7.1.min.js"></script>
+<script type="text/javascript">
+    /*function showMe(self){  //self 是html中传过来的 this，$(self) 表示html中的那个标签
+        if ($(self).next().hasClass("hide")){     //判断是否含有指定class
+            $(self).next().removeClass("hide");  //存在移除
+        }else{
+            $(self).next().addClass("hide");  //不存在添加
+        }
+
+    }*/
+    $(function () {  //执行时机是dom框架加载完成
+        $(".header").click(function () {
+            if ($(this ).next().hasClass("hide")) {     //判断是否含有指定class
+                $(this).next().removeClass("hide");  //存在移除
+            } else {
+                $(this).next().addClass("hide");  //不存在添加
+            }
+        });
+    });
+</script>
+</body>
+</html>

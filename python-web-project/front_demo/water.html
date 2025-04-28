@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>水滴效果</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        /*    元素的长度和宽度包含边框，默认是 content-box（元素的长度和宽度不包含边框）*/
+        }
+        body{
+            width: 100vw;
+            height: 100vh;
+
+            background: #3498db;
+        }
+        #water{
+            width: 300px;
+            height: 300px;
+            margin: 50px auto auto;
+            border-radius: 61% 39% 70% 30% / 38% 30% 70% 62% ;
+            box-shadow: inset 10px 20px 30px rgba(0,0,0,0.5),
+            10px 10px 20px rgb(0,0,0,0.3),
+            15px 15px 30px rgb(0,0,0,0.05),
+            inset -10px -10px 15px rgba(255,255,255,0.8);
+            animation: action 3s linear infinite alternate;
+        }
+        #water:after{
+            content: '';
+            height: 20px;
+            width: 20px;
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            background: rgba(255,255,255,0.8);
+            border-radius: 61% 39% 70% 30% / 69% 62% 38% 31%;
+        }
+        #water:before{
+            content: '';
+            height: 10px;
+            width: 10px;
+            position: absolute;
+            top: 120px;
+            left: 48%;
+            background: rgba(255,255,255,0.8);
+            border-radius: 61% 39% 70% 30% / 69% 62% 38% 31%;
+        }
+        /*设置动画效果，等会再绑定 animation*/
+        @keyframes action {
+            25%{
+                border-radius: 61% 39% 70% 30% / 37% 62% 38% 63% ;
+            }
+             50%{
+                border-radius: 88% 12% 70% 30% / 37% 36% 64% 63% ;
+            }
+             100%{
+                border-radius: 47% 53% 70% 30% / 86% 71% 29% 14% ;
+            }
+
+        }
+    </style>
+</head>
+<body>
+<div id="water">
+
+</div>
+
+</body>
+</html>

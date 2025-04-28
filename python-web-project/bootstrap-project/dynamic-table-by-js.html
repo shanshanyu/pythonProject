@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>动态显示表格</title>
+    <style>
+        table td{
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+<table>
+    <thead>
+        <tr>
+            <td>姓名</td>
+            <td>年龄</td>
+            <td>性别</td>
+        </tr>
+    </thead>
+    <tbody id="body">
+     <!--这里通过js填充内容 -->
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    var content = [
+        {name:'小玉米',age:3,sex:'female'},
+        {name:'小玉米',age:3,sex:'female'},
+        {name:'小玉米',age:3,sex:'female'},
+        {name:'小玉米',age:3,sex:'female'},
+        {name:'小玉米',age:3,sex:'female'}
+    ]
+    //把content的内容放入 tbody
+    for(var idx in content){
+        //创建 tr 标签
+        var trTag = document.createElement("tr");
+        for (var index in content[idx]) {
+            //创建 td 标签
+            var tdTag = document.createElement("td");
+            tdTag.innerText = content[idx][index];
+            //把 td 标签插入 tr 标签中
+            trTag.appendChild(tdTag);
+        }
+        document.getElementById('body').appendChild(trTag);
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>通过js插入元素</title>
+</head>
+<body>
+<ul id="city">
+
+</ul>
+
+<script type="text/javascript">
+    var cityArray = Array("北京","上海","广州","深圳");
+    for(var idx in cityArray){
+        //创建li tag
+        var liTag = document.createElement("li");
+        //把数组内容放到li里面
+        liTag.innerText = cityArray[idx];
+        //把li插入到ul标签下面
+        document.getElementById('city').appendChild(liTag);
+    }
+</script>
+</body>
+</html>

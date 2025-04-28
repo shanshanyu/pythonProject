@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>css定位</title>
+<!--    position有5个可选值：static（默认）、relative、absolute、fixed、sticky
+        static 不能设置 top bottom left right z-index,其他四个定位值可以,而且必须要设置
+
+       absolute 根据父元素的位置进行定位（父元素不能是static定位，如果是父元素就是body）
+-->
+    <style>
+        body{
+            margin: 0;
+        }
+        .c0{
+            width: 50px;
+            height: 50px;
+            background: green;
+            border: 1px solid red;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .c1{
+            width: 200px;
+            height: 200px;
+            background: yellow;
+            border: 1px solid red;
+        }
+        .c2{
+            width: 200px;
+            height: 200px;
+            background: green;
+            border: 1px solid red;
+        }
+        .c2-son{
+            width: 50px;
+            height: 50px;
+            background: black;
+            border: 1px solid red;
+            position: absolute;
+            /*c2-son脱离了原来的文档流，根据body进行定位的*/
+            top: 10px;
+            left: 10px;
+        }
+        .c3{
+            width: 200px;
+            height: 200px;
+            background: orange;
+            border: 1px solid red;
+            position: relative;
+        }
+        .c3-son{
+            width: 50px;
+            height: 50px;
+            background: white;
+            position: absolute;
+            /*c3-son脱离原来的文档流，它的父元素中有一个relative定位，所以根据 c3 进行定位*/
+            top: 10px;
+            left: 10px;
+        }
+        .c4{
+            width: 200px;
+            height: 200px;
+            background: gold;
+            border: 1px solid red;
+        }
+         .c5{
+            width: 200px;
+            height: 200px;
+            background: salmon;
+            border: 1px solid red;
+             position: fixed;
+             bottom: 20px;
+             right: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="c0"></div>
+<div class="c1"></div>
+<div class="c2">
+    <div class="c2-son"></div>
+</div>
+<div class="c3">
+    <div class="c3-son"></div>
+</div>
+<div class="c4"></div>
+<div class="c4"></div>
+<div class="c4"></div>
+<div class="c4"></div>
+<div class="c4"></div>
+<div class="c4"></div>
+
+<div class="c5"></div>
+<!--c5是fixed定位，在浏览器右下角-->
+
+
+</body>
+</html>
