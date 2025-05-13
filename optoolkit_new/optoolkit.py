@@ -5,7 +5,7 @@ version: 1.0
 desc: optoolkit 命令行入口
 '''
 from tools.menu import Menu
-from src.kafka_move_partition import exec_move_partition
+
 
 
 def main():
@@ -21,7 +21,7 @@ def main():
     print(msg)
 
     if pos[1] == "kafka move partition":
-        exec_move_partition()
+        pass
     if pos[1] == 1:
         pass
 
