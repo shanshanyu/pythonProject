@@ -103,7 +103,7 @@ def increase_partition(topic_name,zookeeper_host):
     with open(reassign_increase_file,'w') as file:   # 获取到的结果输出到文件中
         file.write(json.dumps(output_obj))
 
-    reassign_cmd_exec = f'{reassign_script} --zookeeper {zookeeper_host} --reassignment-json-file {reassign_increase_file} --execute|sed -n "3p"'
+    reassign_cmd_exec = f'{reassign_script} --zookeeper {zookeeper_host} --reassignment-json-file {reassign_increase_file} --execute|grep replicas'
 
     try:
         completed_process = subprocess.run(reassign_cmd_exec, shell=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
