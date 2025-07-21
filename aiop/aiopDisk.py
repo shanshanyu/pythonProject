@@ -287,16 +287,18 @@ def _event_statistics ():
         格式如：[[['1', 'default', '测试项目', 26.6, 1.5, 0.0], ['1', 'default', '测试项目', [['0', '/sa/data/1/event/18614'], ['0', '/sa/data/1/event/18616']]], [[['0.114941', '/sa/data/1/user_tag/user_tag_pj1_t1_store']]]], [['2', 'production', '正式项目', 2490.7, 252.5, 0.0], ['2', 'production', '正式项目', [['0', '/sa/data/2/event/18621'], ['0', '/sa/data/2/event/18623']]], [[['0', '/sa/data/2/user_tag/user_tag_pj2_t100_store']]]], [['3', 'OKKI_official_site', 'OKKI官网', 3.1, 2.1, 0.0], ['3', 'OKKI_official_site', 'OKKI官网', [['0.00283203', '/sa/data/3/event/18933'], ['0.00283203', '/sa/data/3/event/18934']]], [[['0.135547', '/sa/data/3/user_tag/user_tag_pj3_t307_store']]]]]
     """
     
-    project_info_sql = "sa_mysql -D metadata -N -e \"select id,name,cname from project where name not like '._%' order by id;\""
+    project_info_sql = "metadb_cli -usc_dba -D metadata -N -e \"select id,name,cname from sbp_project where name not like '._%' order by id;\""
     project_info_cmd = run_cmd(project_info_sql)['stdout'].strip().split('\n')
     project_info = list(map(lambda info: info.split('\t'), project_info_cmd))
     project_disk = []
     filter_cmd = "awk '{{if ($4 == \"M\")print $3/1024,$NF;else if ($4==\"G\") print $3,$NF;else if ($4==\"T\") print $3*1024,$NF;else print 0,$NF}}'"
+    custom_id_cmd = 'aradmin config get global -n customer_id -w literal'
+    custom_id = run_cmd(custom_id_cmd)['stdout'].strip()
     for data in project_info:
         try:
-            cmd = (f"hdfs dfs -du -s -h /sa/data/{data[0]}/event/*|grep merged|{filter_cmd}",
-                   f"hdfs dfs -du -s -h /sa/data/{data[0]}/event/*|grep -v 'merged'|{filter_cmd}",
-                   f"hdfs dfs -du -s -h /sa/data/{data[0]}/user_tag/*|{filter_cmd}")
+            cmd = (f"hdfs dfs -du -s -h /sa/sdw/{custom_id}/data/*/event_ros/data/*|grep merged|{filter_cmd}",
+                   f"hdfs dfs -du -s -h /sa/sdw/{custom_id}/data/*/event_ros/data/*|grep -v 'merged'|{filter_cmd}",
+                   f"hdfs dfs -du -s -h /sa/sdw/{custom_id}/data/*/sdh_segment*|{filter_cmd}")
             event_total_size_list = run_cmd(cmd[1])['stdout'].strip().split()
             tag_total_size_list = run_cmd(cmd[2])['stdout'].strip().split() if len(run_cmd(cmd[2])['stdout'].strip().split())>0 else [0]
             merge_size_list = run_cmd(cmd[0])['stdout'].strip().split()
