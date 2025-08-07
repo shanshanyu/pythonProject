@@ -12,6 +12,7 @@ def is_primer(num):
 
 
 
+
 if __name__ == '__main__':
     num = int(input('请输入一个数字： '))
     ret = is_primer(num)
