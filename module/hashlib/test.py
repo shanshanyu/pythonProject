@@ -4,7 +4,8 @@ import hashlib
 
 def md5(data_string):
     '''md5加密'''
-    obj = hashlib.md5()  # 创建hash 对象
+    salt = 'abcdefgh'
+    obj = hashlib.md5(salt.encode('utf-8'))  # 创建hash 对象
     obj.update(data_string.encode('utf-8'))  # 更新 hash 对象
     return obj.hexdigest()  # 返回摘要
 
