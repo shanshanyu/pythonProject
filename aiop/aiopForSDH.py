@@ -12,6 +12,25 @@ import prettytable
 from hyperion_client.deploy_topo import DeployTopo
 from hyperion_client.hyperion_inner_client.inner_directory_info import InnerDirectoryInfo
 
+colorDefine = namedtuple(
+    'colorDefine', ['red_color', 'green_color', 'yellow_color','dark_green', 'end_color','back_one_line','clear_one_line'])
+color = colorDefine('\33[4;31;43m', '\33[1;32m', '\33[0;33m','\033[36m', '\033[0m','\033[F','\033[K')
+
+# 工具版本号
+VERSION='V2404'
+# 设置日志
+LOG_FORMAT = f"{color.green_color}[%(asctime)s] - [%(levelname)s] - %(message)s{color.end_color}"
+FILE_NAME = "/home/sa_cluster/aiop_result.log"
+LOGGER = logging.getLogger('mylog')
+FH = logging.FileHandler(FILE_NAME)
+SH = logging.StreamHandler()
+FM = logging.Formatter(LOG_FORMAT)
+FH.setFormatter(FM)
+SH.setFormatter(FM)
+LOGGER.addHandler(FH)
+LOGGER.addHandler(SH)
+LOGGER.setLevel(logging.INFO)
+
 # 定义颜色
 colorDefine = namedtuple(
     'colorDefine', ['red_color', 'green_color', 'yellow_color','dark_green', 'end_color','back_one_line','clear_one_line'])
@@ -245,11 +264,167 @@ def single_disk_evaluate(logger):
         logger.info("很棒,当前环境的磁盘无需扩容!")
     get_disk_info([0],'yes',[dir_reg],logger)
 
+# 获取各个节点磁盘增长情况
+def _get_disk_increase():
+    """_summary_
+
+    Returns:
+        _type_: 磁盘占用情况
+    [(('/sensorsdata/rnddata00', [1689071992.573, '498808733696']), ('/sensorsdata/rnddata00', [1689071992.643, '497926877184']), ('/sensorsdata/rnddata00', [1689071992.691, '549487378432'])), (('/sensorsdata/seqdata00', [1689071992.573, '498808733696']), ('/sensorsdata/seqdata00', [1689071992.643, '497926877184']), ('/sensorsdata/seqdata00', [1689071992.691, '549487378432'])), (('/sensorsdata/stdata', [1689071992.573, '498808733696']), ('/sensorsdata/stdata', [1689071992.643, '497926877184']), ('/sensorsdata/stdata', [1689071992.691, '549487378432'])), (('/sensorsmounts/hybriddata', [1689071992.573, '498808733696']), ('/sensorsmounts/hybriddata', [1689071992.643, '497926877184']), ('/sensorsmounts/hybriddata', [1689071992.691, '549487378432'])), (('/sensorsdata/main', [1689071992.573, '253570838528']), ('/sensorsdata/main', [1689071992.643, '250115932160']), ('/sensorsdata/main', [1689071992.691, '429287014400'])), (('/sensorsdata/metadata', [1689071992.573, '253570838528']), ('/sensorsdata/metadata', [1689071992.643, '250115932160']), ('/sensorsdata/metadata', [1689071992.691, '429287014400'])), (('/sensorsmounts/metadata', [1689071992.573, '253570838528']), ('/sensorsmounts/metadata', [1689071992.643, '250115932160']), ('/sensorsmounts/metadata', [1689071992.691, '429287014400']))]
+    """
+
+    metricDefine = namedtuple(
+        'promQlDefine', ['totaldisk', 'freedisk', 'job', 'mountpoint'])
+    metric = metricDefine('node_filesystem_size_bytes',
+                          'node_filesystem_free_bytes', 'sensors-inf-component', '.data.*|.sensorsmounts.*|.kudu.*|.kafka.*')
+    promQl = f'{{job="{metric.job}",mountpoint=~".*{metric.mountpoint}.*"}}'
+    prometheus_host = DeployTopo().get_host_list_by_module_name(
+        'sm', 'prometheus')[0]
+    disk_urls = (f'http://{prometheus_host}:8310/api/v1/query?query=max_over_time({metric.freedisk}{promQl}[10d])',
+                 f'http://{prometheus_host}:8310/api/v1/query?query={metric.freedisk}{promQl}',
+                 f'http://{prometheus_host}:8310/api/v1/query?query={metric.totaldisk}{promQl}')
+    response = {
+        'disk_before_free': requests.get(url=disk_urls[0]),
+        'disk_now_free': requests.get(url=disk_urls[1]),
+        'total_disk': requests.get(url=disk_urls[2])
+    }
+    results = {}
+    for k, v in response.items():
+        if v:
+            tmp = (list(zip(([data['metric']['mountpoint'] for data in json.loads(v.content.decode())['data']['result']]),
+                            [data['value'] for data in json.loads(v.content.decode())['data']['result']])))
+            results[k] = tmp
+    return results
+
+_initial_missing = object()
+
+def reduce(function, sequence, initial=_initial_missing):
+    """
+    reduce(function, sequence[, initial]) -> value
+
+    Apply a function of two arguments cumulatively to the items of a sequence,
+    from left to right, so as to reduce the sequence to a single value.
+    For example, reduce(lambda x, y: x+y, [1, 2, 3, 4, 5]) calculates
+    ((((1+2)+3)+4)+5).  If initial is present, it is placed before the items
+    of the sequence in the calculation, and serves as a default when the
+    sequence is empty.
+    """
+
+    it = iter(sequence)
+
+    if initial is _initial_missing:
+        try:
+            value = next(it)
+        except StopIteration:
+            raise TypeError("reduce() of empty sequence with no initial value") from None
+    else:
+        value = initial
+
+    for element in it:
+        value = function(value, element)
+
+    return value
+
+try:
+    from _functools import reduce
+except ImportError:
+    pass
+
+# 制表统一入口
+def table_insert(table_name,table_info):
+    """_summary_
+
+    Args:
+        table_name (_type_): 表名
+        table_info (_type_): 可迭代对象
+    """
+    for info in table_info:
+        table_name.add_row(info)
+
+# 获取hdfs中各个目录大小，目录深度为2
+result = []
+hdfs_cmd = "sudo -u hdfs hdfs dfs -du -s -h" if len((run_cmd(
+    "grep hdfs /etc/passwd|awk -F: '{print $1}'")['stdout'].split())) == 1 else "hdfs dfs -du -s -h"
+
+def _get_hdfs_du_info():
+    hdfs_disk_table = prettytable.PrettyTable(field_names=['HDFS 目录', '大小(G)','副本数'])
+    hdfs_disk_table.title = ("HDFS 占用一览表")
+    hdfs_disk_table.align = 'l'
+    hdfs_du_info()
+    for i in result:
+        if i[1] == 'T':
+            i[0], i[1] = round(float(i[0])*1024, 1), 'G'
+        if i[3] == 'T':
+            i[2], i[3] = round(float(i[2])*1024, 1), 'G'
+        hdfs_replical_info = 'normal' if (float(i[2])/float(i[0]))<5 else f'{color.red_color}abnormal{color.end_color}{color.green_color}'
+        hdfs_disk_table.add_row([i[4], i[2],hdfs_replical_info])
+    return hdfs_disk_table.get_string(sortby='HDFS 目录')
+
+
 
 
 def cluster_disk_evaluate():
-    '''集群磁盘扩容评估'''
-    pass
+    suggestions_table = prettytable.PrettyTable(
+        field_names=['方案', '内容'])
+    suggestions_table.align = 'l'
+    storage_dirs_info = InnerDirectoryInfo().get_all_storage_dir()
+    seq_dir = {k: v['storage_dirs_info']['sequence']['storage_dir_path']
+               for k, v in storage_dirs_info.items() if (v['storage_dirs_info'].get(
+            'sequence') is not None)}  # v['node_type'] == 'data' or v['node_type'] == 'hybrid'
+    dir_reg_tmp = ['|'.join(data).replace('/sa_cluster', '')
+                   for data in seq_dir.values()]
+    all_seqdata = []
+    for i in [data.split('|') for data in dir_reg_tmp]:
+        [all_seqdata.append(data) for data in i]
+    dir_reg = '|'.join(all_seqdata).replace(
+        'sensorsdata', 'sensorsmounts') + '|/sensorsmounts/seqdata|/sensorsdata/seqdata'
+    disk_dic = {
+        'all_seqdata_before_free_bytes': 'disk_before_free',
+        'all_seqdata_now_free_bytes': 'disk_now_free',
+        'all_seqdata_bytes': 'total_disk'
+    }
+    try:
+
+        seq_disk_dic = {k: [data[1][1] for data in _get_disk_increase().get(
+            v) if data[0] in [data2 for data2 in all_seqdata]] for k, v in disk_dic.items()}
+        disk_count = len(all_seqdata)
+        each_seqdata = round(
+            int(seq_disk_dic.get('all_seqdata_bytes')[0]) / 1024 ** 3)
+    except:
+        sys.exit(color.red_color +
+                 "该环境应该是个老环境且存在磁盘挂载非标现象,辛苦人工大概评估吧,拜拜喽!" + color.end_color)
+    total_disk_used_by_day = round(
+        (reduce(lambda x, y: int(x) + int(y), seq_disk_dic.get('all_seqdata_before_free_bytes')) -
+         reduce(lambda x, y: int(x) + int(y), seq_disk_dic.get('all_seqdata_now_free_bytes'))) / 1024 ** 3 / 25, 2)
+    if_archive = "当前环境存在归档" if (run_cmd(
+        'sdfadmin archive status 2>&1|grep enable|wc -l')['stdout'].split()[0]) == '1' else "当前环境没有归档"
+
+    suggest_str = None
+    if each_seqdata < 1024 * 4:
+        suggest_str = f"基于当前的增长情况,下述「磁盘使用率一览表」中,若每块顺序盘扩 500G,预计可使用 {round(500 * disk_count / (total_disk_used_by_day * 30), 1)} 个月;若每块顺序盘扩 1000G,预计可使用 {round(1000 * disk_count / (total_disk_used_by_day * 30), 1)} 个月."
+    else:
+        suggest_str = f"基于当前的增长情况,下述「磁盘使用率一览表」中各节点若各加 1 块 {each_seqdata}G 顺序盘,预计可使用 {round(each_seqdata * len(dir_reg_tmp) / (total_disk_used_by_day * 30), 1)} 个月;若各加 2 块 {each_seqdata}G 顺序盘,按照当前近期使用情况,预计可使用 {round(2 * each_seqdata * len(dir_reg_tmp) / (total_disk_used_by_day * 30), 1)} 个月."
+    suggestions_list = [
+        ['删历史数据',
+         '可以参考神策官网「https://manual.sensorsdata.cn/sa/latest/sdfadmin-107905989.html」清理历史数据释放存储.'],
+        ['扩容数据盘', f'{suggest_str}'],
+        ['做数据归档',
+         '若无归档且磁盘 >=2T,也可以考虑开启归档进行磁盘释放,仅集群环境支持归档,此操作由 TAM 提「归档」类型的 SOR 工单由神策运维同学开启.']
+    ]
+    suggestions_table.title = f"现状:当前环境共有 {disk_count} 块顺序盘,每块顺序盘 {each_seqdata}G,共 {each_seqdata * disk_count}G,每天增长 {total_disk_used_by_day}G,磁盘使用率较高,需参考如下方案进行处理."
+    table_insert(suggestions_table, suggestions_list)
+    suggestions = f"""
+    ================================================磁盘扩容需积极================================================
+    {suggestions_table}
+    ================================================故障丢数不可取================================================
+    """
+    LOGGER.info(if_archive)
+    LOGGER.info("正在获取 hdfs 中各个目录的使用情况,请稍后...")
+    LOGGER.info(
+        f"下述「HDFS 占用一览表」需关注如下情况\n1:若非[/sa/data]目录较大,需要具体确认子目录使用情况,如果用不到可以删除释放部分存储\n2:副本数一列若出现 abnormal 请反馈给到「AIOP 工单整治」群\n{_get_hdfs_du_info()}")
+    LOGGER.info(f"当前环境磁盘使用情况使用情况.\n")
+    LOGGER.info(
+        f"注意:\n1、若有大分群可以引导客户清理或者缩短保留时间.\n2、merge 如果很大,比如超过1T,可以找导入接口人确认.\n3、hdfs 中若非 /sa/data 目录较大,需要具体确认具体占用内容.\n4、确认下述「磁盘使用率一览表」中的磁盘是否存在异构现象,如果异构需要统一大小.\nPS:上述情况都没有则可以将下面的扩容方案转附到工单并将工单转给 tam.\n{suggestions}")
 
 
 def disk_evaluate(logger):
