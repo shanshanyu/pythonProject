@@ -14,18 +14,14 @@ class Solution:
             while  s < k and right < n:
                 ans += 1
                 right += 1
-                if right == n:
-                    break
-                s *= nums[right]
-
+                if right < n:
+                    s *= nums[right]
         return ans
-
-
 
 
 def main():
     s = Solution()
-    ret = s.numSubarrayProductLessThanK([10,5,2,6], 100)
+    ret = s.numSubarrayProductLessThanK([1,2,3,4], 100)
     print(ret)
 
 
